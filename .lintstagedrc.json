@@ -1,0 +1,5 @@
+{
+  "*.{ts,tsx}": "yarn check-types",
+  "*.{ts,tsx,js}": "yarn check-all",
+  "*.{json,md}": "yarn check-format"
+}
