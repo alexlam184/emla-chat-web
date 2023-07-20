@@ -1,78 +1,96 @@
-import { OnOpenAIStart } from "../Events/EventHandler";
 import { Configuration, OpenAIApi } from "openai";
-import { PromptManager } from "./PromptManager";
-import { MessageManager } from "./MessageManager";
-import { Role, Model } from "../Data/Enum";
+import { usePrompt } from "../../hook/PromptHook";
+import { useMessage } from "../../hook/MessageHook";
+import { Role, Model, events } from "../Data/Enum";
+import { useSubscribe, useUnsubscribe } from "../../hook/EventHooks";
+import { useEffect } from "react";
 
-export class OpenAIManager {
+const getOutput = async (
+  openai: OpenAIApi,
+  model: any,
+  meessages: any,
+  max_tokens: any,
+  stop: string,
+  temperature: any,
+  frequency_penalty: any,
+  presence_penalty: any
+) => {
+  const GPTModule = async (prompts: any) => {
+    const response = await openai.createChatCompletion({
+      model: model,
+      messages: prompts,
+      max_tokens: max_tokens,
+      stop: stop,
+      temperature: temperature,
+      frequency_penalty: frequency_penalty,
+      presence_penalty: presence_penalty,
+    });
+    return response.data.choices[0].message?.content;
+  };
+  const output = (await GPTModule(meessages)) as string;
+  return output;
+};
+
+function OpenAIManager() {
   /*Model Properties*/
-  private OPENAI_APIKEY = "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";
-  private model = Model.gpt3_turbo_16k;
-  private max_tokens = 2000;
-  private stop = "<<END>>";
-  private temperature = 0.0;
-  private frequency_penalty = 1.0;
-  private presence_penalty = 1.3;
+  const OPENAI_APIKEY = "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";
+  const model = Model.gpt3_turbo_16k;
+  const max_tokens = 200;
+  const stop = "<<END>>";
+  const temperature = 1.0;
+  const frequency_penalty = 1.0;
+  const presence_penalty = 1.3;
 
   /*Prompt Properties*/
-  private userPrefix = "請使用廣東話同穿插emoji。請遵守<<i:>>規則。";
-  private userProfix = "(100字)";
-  private assistantPrefix = "";
-  private assistantProfix = "<<END>>";
+  const userPrefix =
+    "請使用英文同每句穿插emoji。當牽涉到專業知識，你必須使用日常生活比喻協助解釋，其他情況你唔應該使用比喻。";
+  const userProfix = "（50字）";
+  const assistantPrefix = "";
+  const assistantProfix = "<<END>>";
 
-  /* Singleton Pattern */
-  private static instance: OpenAIManager;
-  public static getInstance(): OpenAIManager {
-    if (!OpenAIManager.instance) {
-      OpenAIManager.instance = new OpenAIManager();
-    }
-    return OpenAIManager.instance;
-  }
-
-  constructor() {
-    this.APICalling = this.APICalling.bind(this);
-    const openAIEvent = OnOpenAIStart.getInstance();
-    openAIEvent.subscribe(this.APICalling);
-  }
-
-  private async APICalling() {
+  const APICalling = async () => {
     console.log("API CALLING...");
     const configuration = new Configuration({
-      apiKey: this.OPENAI_APIKEY,
+      apiKey: OPENAI_APIKEY,
     });
     const openai = new OpenAIApi(configuration);
 
-    const promptManager = PromptManager.getInstance();
-    let prompts: any = [];
-    promptManager.getPrompt().map((prompt) => {
+    const { prompts, promptAdjusting } = usePrompt();
+    let prompts_api: any = [];
+    prompts.map((prompt) => {
       prompt.role === Role.User
-        ? (prompt.content = this.userPrefix + prompt.content + this.userProfix)
-        : (prompt.content =
-            this.assistantPrefix + prompt.content + this.assistantProfix);
-      prompts = [...prompts, prompt];
+        ? (prompt.content = userPrefix + prompt.content + userProfix)
+        : (prompt.content = assistantPrefix + prompt.content + assistantProfix);
+      prompts_api = [...prompts, prompt];
     });
 
-    const GPTModule = async (prompts: any) => {
-      const response = await openai.createChatCompletion({
-        model: this.model,
-        messages: prompts,
-        max_tokens: this.max_tokens,
-        stop: this.stop,
-        temperature: this.temperature,
-        frequency_penalty: this.frequency_penalty,
-        presence_penalty: this.presence_penalty,
-      });
-      return response.data.choices[0].message?.content;
-    };
-
-    const output = (await GPTModule(prompts)) as string;
-    const msgManager = MessageManager.getInstance();
-    msgManager.pushMessage({
+    const output = await getOutput(
+      openai,
+      model,
+      prompts_api,
+      max_tokens,
+      stop,
+      temperature,
+      frequency_penalty,
+      presence_penalty
+    );
+    const { messageAdjusting } = useMessage();
+    messageAdjusting({
       time: Date.now(),
       role: Role.Assistant,
       content: output,
       liked: false,
     });
-    promptManager.promptAdjusting(output);
-  }
+    promptAdjusting(output);
+  };
+  useEffect(() => {
+    const index = useSubscribe(APICalling, events.OnOpenAIStart);
+    return () => {
+      useUnsubscribe(index, events.OnOpenAIStart);
+    };
+  }, []);
+
+  return <></>;
 }
+
+export default OpenAIManager;

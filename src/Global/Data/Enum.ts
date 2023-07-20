@@ -12,3 +12,11 @@ export enum Model {
   gpt4 = "gpt-4",
   gpt4_32k = "gpt-4-32k",
 }
+
+export enum events {
+  OnUserSubmitStart,
+  OnUserSubmitEnd,
+  OnOpenAIStart,
+  OnVitsStart,
+  OnAPIsEnd,
+}

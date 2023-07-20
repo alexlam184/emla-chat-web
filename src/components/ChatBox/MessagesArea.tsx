@@ -1,39 +1,28 @@
 import { useState, useEffect, useRef } from "react";
 import Message from "./Message";
-import { MessageProps } from "../../Global/Data/Interface";
-import {
-  OnAPIsEnd,
-  OnUserSubmitEnd,
-  OnUserSubmitStart,
-} from "../../Global/Events/EventHandler";
-import { MessageManager } from "../../Global/Logic/MessageManager";
+import { useMessage } from "../../hook/MessageHook";
 import LoadingMessage from "./LoadingMessage";
+import { useSubscribe, useUnsubscribe } from "../../hook/EventHooks";
+import { events } from "../../Global/Data/Enum";
 
 function MessagesArea() {
-  const msgManager = MessageManager.getInstance();
-  const [messages, setMessages] = useState<Array<MessageProps>>(
-    msgManager.getMessage()
-  );
+  const { messages } = useMessage();
   const [loading, setLoading] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  OnUserSubmitStart.getInstance().subscribe(() => {
-    console.log("Show loading message.");
-    setLoading(true);
-  });
-  OnUserSubmitEnd.getInstance().subscribe(() => {
-    console.log("Update messages.");
-    setMessages([...msgManager.getMessage()]);
-  });
-  OnAPIsEnd.getInstance().subscribe(() => {
-    console.log("Update messages.");
-    setMessages([...msgManager.getMessage()]);
-    console.log("Remove loading message.");
-    setLoading(false);
-  });
-
   useEffect(() => {
-    setMessages([...msgManager.getMessage()]);
+    const index_show = useSubscribe(() => {
+      console.log("Show loading message.");
+      setLoading(true);
+    }, events.OnUserSubmitStart);
+    const index_remove = useSubscribe(() => {
+      console.log("Remove loading message.");
+      setLoading(false);
+    }, events.OnAPIsEnd);
+    return () => {
+      useUnsubscribe(index_show, events.OnUserSubmitStart);
+      useUnsubscribe(index_remove, events.OnAPIsEnd);
+    };
   }, []);
 
   useEffect(() => {
@@ -48,13 +37,7 @@ function MessagesArea() {
       className="w-full h-full px-3 py-5 m-5 overflow-y-auto overflow-x-hidden scroll-smooth border-4 rounded-md border-indigo-500"
     >
       {messages.map((msg) => (
-        <Message
-          key={msg.time}
-          time={msg.time}
-          role={msg.role}
-          content={msg.content}
-          liked={msg.liked}
-        />
+        <Message key={msg.time} {...msg} />
       ))}
       {loading ? <LoadingMessage /> : ""}
     </div>

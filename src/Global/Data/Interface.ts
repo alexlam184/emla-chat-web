@@ -1,13 +1,11 @@
-import { Role } from "./Enum";
+export interface eventArg extends messageProps {}
 
-export interface PromptProps {
+export interface promptProps {
   role: string;
   content: string;
 }
 
-export interface MessageProps {
+export interface messageProps extends promptProps {
   time: number;
-  role: Role;
-  content: string;
   liked: boolean;
 }
