@@ -1,9 +1,7 @@
 import { Role } from "../../Global/Data/Enum";
-import { IconButton } from "@mui/material";
-import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useMessage } from "../../hook/MessageHook";
 import { messageProps } from "../../Global/Data/Interface";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 
 /* Behavior of a single message */
 function Message(msg: messageProps) {
@@ -40,14 +38,23 @@ function Message(msg: messageProps) {
           }`}
           style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
         >
-          <div className="text-xl">{prompt2message(msg.content)}</div>
+          <div className="text-md sm:text-lg">
+            {prompt2message(msg.content)}
+          </div>
         </div>
         {/* Thumb Button */}
         {msg.role === Role.Assistant ? (
-          <div className="flex h-full w-auto items-center">
-            <IconButton onClick={handleLike}>
-              {msg.liked ? <ThumbUpIcon /> : <ThumbUpOffAltOutlinedIcon />}
-            </IconButton>
+          <div className="flex flex-col items-center justify-center">
+            <button
+              onClick={handleLike}
+              className="rounded-full w-auto p-2 hover:bg-slate-300"
+            >
+              {msg.liked ? (
+                <AiFillLike className=" scale-150" />
+              ) : (
+                <AiOutlineLike className=" scale-150" />
+              )}
+            </button>
           </div>
         ) : (
           ""

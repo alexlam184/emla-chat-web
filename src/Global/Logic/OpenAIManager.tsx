@@ -1,12 +1,21 @@
 import { Configuration, OpenAIApi } from "openai";
 import { usePrompt } from "../../hook/PromptHook";
 import { useMessage } from "../../hook/MessageHook";
-import { Role, Model, events } from "../Data/Enum";
+import { Role, events } from "../Data/Enum";
 import { useSubscribe, useUnsubscribe } from "../../hook/EventHooks";
 import { useEffect } from "react";
+import { messageSettings } from "../Data/Prompts";
+import { useVits } from "./VitsManager";
+
+const OPENAI_APIKEY = "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";
+
+const configuration = new Configuration({
+  apiKey: OPENAI_APIKEY,
+});
+
+const openai = new OpenAIApi(configuration);
 
 const getOutput = async (
-  openai: OpenAIApi,
   model: any,
   meessages: any,
   max_tokens: any,
@@ -15,7 +24,7 @@ const getOutput = async (
   frequency_penalty: any,
   presence_penalty: any
 ) => {
-  const GPTModule = async (prompts: any) => {
+  /*   const GPTModule = async (prompts: any) => {
     const response = await openai.createChatCompletion({
       model: model,
       messages: prompts,
@@ -28,51 +37,38 @@ const getOutput = async (
     return response.data.choices[0].message?.content;
   };
   const output = (await GPTModule(meessages)) as string;
-  return output;
+
+  return output; */
+  return "哈嘍！我個名系艾瑪！";
 };
 
 function OpenAIManager() {
-  /*Model Properties*/
-  const OPENAI_APIKEY = "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";
-  const model = Model.gpt3_turbo_16k;
-  const max_tokens = 200;
-  const stop = "<<END>>";
-  const temperature = 1.0;
-  const frequency_penalty = 1.0;
-  const presence_penalty = 1.3;
-
-  /*Prompt Properties*/
-  const userPrefix =
-    "請使用英文同每句穿插emoji。當牽涉到專業知識，你必須使用日常生活比喻協助解釋，其他情況你唔應該使用比喻。";
-  const userProfix = "（50字）";
-  const assistantPrefix = "";
-  const assistantProfix = "<<END>>";
-
-  const APICalling = async () => {
-    console.log("API CALLING...");
-    const configuration = new Configuration({
-      apiKey: OPENAI_APIKEY,
-    });
-    const openai = new OpenAIApi(configuration);
+  const openAICalling = async () => {
+    console.log("openAI CALLING...");
 
     const { prompts, promptAdjusting } = usePrompt();
     let prompts_api: any = [];
     prompts.map((prompt) => {
       prompt.role === Role.User
-        ? (prompt.content = userPrefix + prompt.content + userProfix)
-        : (prompt.content = assistantPrefix + prompt.content + assistantProfix);
+        ? (prompt.content =
+            messageSettings.userPrefix +
+            prompt.content +
+            messageSettings.userProfix)
+        : (prompt.content =
+            messageSettings.assistantPrefix +
+            prompt.content +
+            messageSettings.assistantProfix);
       prompts_api = [...prompts, prompt];
     });
 
     const output = await getOutput(
-      openai,
-      model,
+      messageSettings.model,
       prompts_api,
-      max_tokens,
-      stop,
-      temperature,
-      frequency_penalty,
-      presence_penalty
+      messageSettings.max_tokens,
+      messageSettings.stop,
+      messageSettings.temperature,
+      messageSettings.frequency_penalty,
+      messageSettings.presence_penalty
     );
     const { messageAdjusting } = useMessage();
     messageAdjusting({
@@ -82,9 +78,12 @@ function OpenAIManager() {
       liked: false,
     });
     promptAdjusting(output);
+    const { setVoiceText } = useVits();
+    setVoiceText(output);
   };
+
   useEffect(() => {
-    const index = useSubscribe(APICalling, events.OnOpenAIStart);
+    const index = useSubscribe(openAICalling, events.OnOpenAIStart);
     return () => {
       useUnsubscribe(index, events.OnOpenAIStart);
     };

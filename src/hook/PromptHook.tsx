@@ -19,7 +19,7 @@ export const usePrompt = () => {
     prompts = _prompts;
   };
 
-  const pushPrompt = (prompt?: promptProps) => {
+  const pushPrompt = async (prompt?: promptProps) => {
     prompt &&
       setPrompts([...prompts, { role: prompt.role, content: prompt.content }]);
     console.log("Push prompt");

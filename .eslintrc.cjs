@@ -10,5 +10,8 @@ module.exports = {
   plugins: ["react-refresh"],
   rules: {
     "react-refresh/only-export-components": "warn",
+    test: /.ts$/,
+    exclude: /node_modules/,
+    loader: "ts-loader",
   },
 };

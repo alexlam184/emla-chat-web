@@ -1,0 +1,30 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "Elma.moc3",
+    "Textures": ["Elma.2048/texture_00.png"],
+    "Physics": "Elma.physics3.json",
+    "DisplayInfo": "Elma.cdi3.json"
+  },
+  "Motions": {
+    "Idle": [
+      {
+        "File": "motions/hand.motion3.json",
+        "FadeInTime": 0.5,
+        "FadeOutTime": 0.5
+      }
+    ]
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": ["ParamEyeLOpen", "ParamEyeROpen", "Param7"]
+    },
+    {
+      "Target": "Parameter",
+      "Name": "LipSync",
+      "Ids": ["ParamMouthForm", "ParamMouthOpenY"]
+    }
+  ]
+}

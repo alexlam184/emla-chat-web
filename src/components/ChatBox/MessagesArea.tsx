@@ -11,11 +11,11 @@ function MessagesArea() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const index_show = useSubscribe(() => {
+    const index_show = useSubscribe(async () => {
       console.log("Show loading message.");
       setLoading(true);
     }, events.OnUserSubmitStart);
-    const index_remove = useSubscribe(() => {
+    const index_remove = useSubscribe(async () => {
       console.log("Remove loading message.");
       setLoading(false);
     }, events.OnAPIsEnd);

@@ -12,7 +12,7 @@ export const useMessage = () => {
     messages = _messages;
   };
 
-  const pushMessage = (msg?: messageProps) => {
+  const pushMessage = async (msg?: messageProps) => {
     msg && setMessages([...messages, msg]);
     console.log("Push messages. ");
     console.log(messages);

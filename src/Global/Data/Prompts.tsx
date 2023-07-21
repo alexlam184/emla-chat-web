@@ -1,3 +1,4 @@
+import { Model } from "./Enum";
 import { promptProps } from "./Interface";
 
 export const systemContent =
@@ -58,3 +59,30 @@ export const few_shot_prompts: Array<promptProps> = [
       "當然！我有一個關於電子工程嘅笑話俾你聽：有一次，兩個電子工程師走入一間酒吧。其中一個對另一個講：“你知唔知道點解我哋嘅生活好似布拉德利計時器？”另一個問：“點解呢？”第一個回答：“因為每日都要面對好多timing issues！”😄希望呢個笑話可以帶比你歡樂！如果想再聽其他類型嘅笑話，隨時講比我知啊~🎉",
   },
 ];
+
+export const messageSettings = {
+  /*Model Properties*/
+  model: Model.gpt3_turbo_16k,
+  max_tokens: 200,
+  stop: "<<END>>",
+  temperature: 1.0,
+  frequency_penalty: 1.0,
+  presence_penalty: 1.3,
+
+  /*Prompt Properties*/
+  userPrefix:
+    "請使用英文同每句穿插emoji。當牽涉到專業知識，你必須使用日常生活比喻協助解釋，其他情況你唔應該使用比喻。",
+  userProfix: "（50字）",
+  assistantPrefix: "",
+  assistantProfix: "<<END>>",
+};
+
+export const vitsSettings = {
+  /*Model Properties*/
+  model: Model.gpt3_turbo,
+  max_tokens: 50,
+  stop: "<<END>>",
+  temperature: 0.0,
+  frequency_penalty: 1.0,
+  presence_penalty: 1.0,
+};

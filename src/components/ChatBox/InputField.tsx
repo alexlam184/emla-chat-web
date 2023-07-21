@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { IconButton } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
 import { events, Role } from "../../Global/Data/Enum";
 import { messageProps } from "../../Global/Data/Interface";
 import {
@@ -8,12 +6,13 @@ import {
   useTrigger,
   useUnsubscribe,
 } from "../../hook/EventHooks";
+import { AiOutlineSend } from "react-icons/ai";
 
 /* Input field of user's messages */
 function InputField() {
   const [sending, setSending] = useState<boolean>(false);
   useEffect(() => {
-    const index = useSubscribe(() => {
+    const index = useSubscribe(async () => {
       console.log("Activate Sending.");
       setSending(false);
     }, events.OnAPIsEnd);
@@ -24,7 +23,7 @@ function InputField() {
 
   const [message, setMessage] = useState("");
   const handleSend = () => {
-    if (sending) return;
+    if (sending || message === "") return;
     setSending(true);
     const msg: messageProps = {
       time: Date.now(),
@@ -55,11 +54,12 @@ function InputField() {
         />
       </form>
       {/* SendButton */}
-      <div className="h-full rounded-full bg-slate-200">
-        <IconButton onClick={handleSend}>
-          <SendIcon />
-        </IconButton>
-      </div>
+      <button
+        onClick={handleSend}
+        className="p-3 rounded-full bg-slate-200 hover:bg-slate-300 active:bg-slate-100 active:scale-95"
+      >
+        <AiOutlineSend className="scale-150" />
+      </button>
     </div>
   );
 }
