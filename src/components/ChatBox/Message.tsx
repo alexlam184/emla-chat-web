@@ -1,19 +1,24 @@
-import { Role } from "../../Global/Data/Enum";
-import { useMessage } from "../../hook/MessageHook";
-import { messageProps } from "../../Global/Data/Interface";
+//#region Dependency
+import { Role } from "../../global/data/Enum";
+import { messageProps } from "../../global/data/Interface";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
+import { useState } from "react";
+import useMessage from "../../hook/useMessage";
+//#endregion
 
 /* Behavior of a single message */
 function Message(msg: messageProps) {
+  const [liked, setLiked] = useState(msg.liked);
   const { prompt2message, setMessage } = useMessage();
   const handleLike = () => {
     const _msg: messageProps = {
       time: msg.time,
       role: msg.role,
       content: msg.content,
-      liked: !msg.liked,
+      liked: !liked,
     };
-    setMessage(msg.time, _msg);
+    msg?.time && setMessage(msg.time, _msg);
+    setLiked(!liked);
   };
 
   return (
@@ -39,7 +44,9 @@ function Message(msg: messageProps) {
           style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
         >
           <div className="text-md sm:text-lg">
-            {prompt2message(msg.content)}
+            {msg.role === Role.Assistant
+              ? msg.content && prompt2message(msg.content)
+              : msg.content}
           </div>
         </div>
         {/* Thumb Button */}
@@ -47,9 +54,9 @@ function Message(msg: messageProps) {
           <div className="flex flex-col items-center justify-center">
             <button
               onClick={handleLike}
-              className="rounded-full w-auto p-2 hover:bg-slate-300"
+              className="rounded-full w-auto p-2 hover:scale-125 active:scale-95"
             >
-              {msg.liked ? (
+              {liked ? (
                 <AiFillLike className=" scale-150" />
               ) : (
                 <AiOutlineLike className=" scale-150" />

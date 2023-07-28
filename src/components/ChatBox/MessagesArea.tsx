@@ -1,29 +1,18 @@
-import { useState, useEffect, useRef } from "react";
+//#region Dependency
+import { useEffect, useRef } from "react";
 import Message from "./Message";
-import { useMessage } from "../../hook/MessageHook";
 import LoadingMessage from "./LoadingMessage";
-import { useSubscribe, useUnsubscribe } from "../../hook/EventHooks";
-import { events } from "../../Global/Data/Enum";
+import useMessage from "../../hook/useMessage";
+//#endregion
 
-function MessagesArea() {
+interface MessagesAreaProps {
+  loading: boolean;
+  speaking: boolean;
+}
+
+function MessagesArea(props: MessagesAreaProps) {
   const { messages } = useMessage();
-  const [loading, setLoading] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const index_show = useSubscribe(async () => {
-      console.log("Show loading message.");
-      setLoading(true);
-    }, events.OnUserSubmitStart);
-    const index_remove = useSubscribe(async () => {
-      console.log("Remove loading message.");
-      setLoading(false);
-    }, events.OnAPIsEnd);
-    return () => {
-      useUnsubscribe(index_show, events.OnUserSubmitStart);
-      useUnsubscribe(index_remove, events.OnAPIsEnd);
-    };
-  }, []);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -39,7 +28,16 @@ function MessagesArea() {
       {messages.map((msg) => (
         <Message key={msg.time} {...msg} />
       ))}
-      {loading ? <LoadingMessage /> : ""}
+      {props.loading ? (
+        <LoadingMessage loadingMsg="Elma is thinking。。。" />
+      ) : (
+        ""
+      )}
+      {props.speaking ? (
+        <LoadingMessage loadingMsg="Sound Recording。。。" />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

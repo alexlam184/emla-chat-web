@@ -1,13 +1,11 @@
+//#region Dependency
 import { Configuration, OpenAIApi } from "openai";
-import { usePrompt } from "../../hook/PromptHook";
-import { useMessage } from "../../hook/MessageHook";
-import { Role, events } from "../Data/Enum";
-import { useSubscribe, useUnsubscribe } from "../../hook/EventHooks";
-import { useEffect } from "react";
-import { messageSettings } from "../Data/Prompts";
-import { useVits } from "./VitsManager";
+import { Role } from "../data/Enum";
+import { messageSettings } from "../data/Prompts";
+import { eventArg, promptProps } from "../data/Interface";
+//#endregion
 
-const OPENAI_APIKEY = "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";
+const OPENAI_APIKEY = "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";
 
 const configuration = new Configuration({
   apiKey: OPENAI_APIKEY,
@@ -24,7 +22,8 @@ const getOutput = async (
   frequency_penalty: any,
   presence_penalty: any
 ) => {
-  /*   const GPTModule = async (prompts: any) => {
+  return await "<<e:happy>>Hi hi~ 🤗 我係工程系Vtuber Elma 👩‍💻 ,同時係Semtron課程嘅導師🎓。作為電子工程系出身嘅Vtuber, Elma希望可以同大家分享各種工程上得意嘅知識同Maker’s文化! Yea！ 👍!";
+  const GPTModule = async (prompts: any) => {
     const response = await openai.createChatCompletion({
       model: model,
       messages: prompts,
@@ -38,15 +37,12 @@ const getOutput = async (
   };
   const output = (await GPTModule(meessages)) as string;
 
-  return output; */
-  return "哈嘍！我個名系艾瑪！";
+  return await output;
 };
 
-function OpenAIManager() {
-  const openAICalling = async () => {
+export const useOpenAI = () => {
+  const openAICalling = async (prompts: Array<promptProps>) => {
     console.log("openAI CALLING...");
-
-    const { prompts, promptAdjusting } = usePrompt();
     let prompts_api: any = [];
     prompts.map((prompt) => {
       prompt.role === Role.User
@@ -70,26 +66,15 @@ function OpenAIManager() {
       messageSettings.frequency_penalty,
       messageSettings.presence_penalty
     );
-    const { messageAdjusting } = useMessage();
-    messageAdjusting({
+    const _arg: eventArg = {
       time: Date.now(),
       role: Role.Assistant,
       content: output,
       liked: false,
-    });
-    promptAdjusting(output);
-    const { setVoiceText } = useVits();
-    setVoiceText(output);
+    };
+
+    return await _arg;
   };
 
-  useEffect(() => {
-    const index = useSubscribe(openAICalling, events.OnOpenAIStart);
-    return () => {
-      useUnsubscribe(index, events.OnOpenAIStart);
-    };
-  }, []);
-
-  return <></>;
-}
-
-export default OpenAIManager;
+  return { openAICalling };
+};

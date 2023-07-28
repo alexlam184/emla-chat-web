@@ -1,42 +1,70 @@
-import { useState, useEffect } from "react";
-import { events, Role } from "../../Global/Data/Enum";
-import { messageProps } from "../../Global/Data/Interface";
+//#region Dependency
+import { useEffect } from "react";
+import { Role } from "../../global/data/Enum";
+import { eventArg } from "../../global/data/Interface";
+import { AiOutlineClear, AiOutlineSend } from "react-icons/ai";
+import { BiMicrophone, BiMicrophoneOff } from "react-icons/bi";
 import {
-  useSubscribe,
-  useTrigger,
-  useUnsubscribe,
-} from "../../hook/EventHooks";
-import { AiOutlineSend } from "react-icons/ai";
+  useMessageStore,
+  useMessagesStore,
+  usePromptsStore,
+} from "../../store/store";
+import { systemContent, few_shot_prompts } from "../../global/data/Prompts";
+//#endregion
+
+interface InputFieldProps {
+  handleUserSubmit: (arg: eventArg) => void;
+  stopInput: boolean;
+  handleSTTStart: () => void;
+  handleSTTEnd: () => void;
+  speaking: boolean;
+  recognizedSpeech: string;
+}
 
 /* Input field of user's messages */
-function InputField() {
-  const [sending, setSending] = useState<boolean>(false);
-  useEffect(() => {
-    const index = useSubscribe(async () => {
-      console.log("Activate Sending.");
-      setSending(false);
-    }, events.OnAPIsEnd);
-    return () => {
-      useUnsubscribe(index, events.OnAPIsEnd);
-    };
-  }, []);
+function InputField(props: InputFieldProps) {
+  const { message, setMessage } = useMessageStore();
 
-  const [message, setMessage] = useState("");
+  useEffect(() => {
+    if (props.speaking) {
+      setMessage(message + props.recognizedSpeech);
+    }
+  }, [props.recognizedSpeech]);
+
   const handleSend = () => {
-    if (sending || message === "") return;
-    setSending(true);
-    const msg: messageProps = {
+    const arg: eventArg = {
       time: Date.now(),
       role: Role.User,
       content: message,
       liked: false,
     };
-    console.log("User Submit Emit.");
-    useTrigger(events.OnUserSubmitStart, msg);
+    props.handleUserSubmit(arg);
     setMessage("");
   };
+
+  const { setMessages } = useMessagesStore();
+  const { setPrompts } = usePromptsStore();
+  const handleClear = () => {
+    setMessages([]);
+    setPrompts([
+      {
+        role: Role.System,
+        content: systemContent,
+      },
+      ...few_shot_prompts,
+    ]);
+  };
+
   return (
     <div className="flex flex-row w-full h-auto justify-around items-center p-1 space-x-3">
+      {/* CleanButton */}
+      <button
+        onClick={handleClear}
+        disabled={props.stopInput}
+        className="p-3 rounded-full bg-slate-200 hover:bg-slate-300 hover:scale-110 active:bg-slate-100 active:scale-95"
+      >
+        <AiOutlineClear className="scale-150" />
+      </button>
       {/* Input Area */}
       <form
         className="w-full"
@@ -51,12 +79,26 @@ function InputField() {
           className="w-full p-2 rounded-3xl"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          disabled={props.stopInput || props.speaking}
         />
       </form>
+      {/* STTButton */}
+      <button
+        onClick={!props.speaking ? props.handleSTTStart : props.handleSTTEnd}
+        disabled={props.stopInput}
+        className="p-3 rounded-full bg-slate-200 hover:bg-slate-300 hover:scale-110 active:bg-slate-100 active:scale-95"
+      >
+        {props.speaking ? (
+          <BiMicrophone className="scale-150" />
+        ) : (
+          <BiMicrophoneOff className="scale-150" />
+        )}
+      </button>
       {/* SendButton */}
       <button
         onClick={handleSend}
-        className="p-3 rounded-full bg-slate-200 hover:bg-slate-300 active:bg-slate-100 active:scale-95"
+        disabled={props.stopInput || props.speaking || message === ""}
+        className="p-3 rounded-full bg-slate-200 hover:bg-slate-300 hover:scale-110 active:bg-slate-100 active:scale-95"
       >
         <AiOutlineSend className="scale-150" />
       </button>
