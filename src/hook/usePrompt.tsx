@@ -7,30 +7,27 @@ import { usePromptsStore } from "../store/store";
 export default function usePrompt() {
   const { prompts, setPrompts } = usePromptsStore();
 
-  const pushPrompt = async (prompt: promptProps) => {
-    const _prompt = prompt ? prompt : {};
-    await setPrompts([
-      ...prompts,
-      { role: _prompt.role, content: _prompt.content },
-    ]);
+  const pushPrompt = (_prompts: Array<promptProps>) => {
+    setPrompts([...prompts, ..._prompts]);
     console.log("Push prompt");
     console.log(prompts);
   };
 
-  const promptAdjusting = async (arg?: eventArg) => {
+  const promptAdjusting = (arg: eventArg) => {
     let _prompt = arg?.content || "";
     const imporperLiteral = "對唔住";
     if (_prompt.includes(imporperLiteral)) {
       prompts.pop();
       console.log("Imporper prompt deleted.");
       console.log(prompts);
+      return null;
     } else {
       _prompt = _prompt.replace(/的/g, "嘅");
       const prompt: promptProps = {
         role: Role.Assistant,
         content: _prompt,
       };
-      await pushPrompt(prompt);
+      return prompt;
     }
   };
 

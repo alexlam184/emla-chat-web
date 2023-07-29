@@ -1,7 +1,6 @@
 //#region Dependency
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import emojiStrip from "emoji-strip";
-import { useMutedStore } from "../../store/store";
 import { useState } from "react";
 //#endregion
 

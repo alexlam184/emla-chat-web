@@ -79,7 +79,7 @@ function InputField(props: InputFieldProps) {
           className="w-full p-2 rounded-3xl"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          disabled={props.stopInput || props.speaking}
+          disabled={props.speaking}
         />
       </form>
       {/* STTButton */}

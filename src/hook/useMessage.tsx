@@ -6,10 +6,9 @@ import { useMessagesStore } from "../store/store";
 
 export default function useMessage() {
   const { messages, setMessages } = useMessagesStore();
-  const pushMessage = (msg: messageProps) => {
-    console.log("New msg to be updated:");
-    console.log([...messages, msg]);
-    setMessages([...messages, msg]);
+
+  const pushMessage = (msgs: Array<messageProps>) => {
+    setMessages([...messages, ...msgs]);
     console.log("Push messages. ");
     console.log(messages);
   };
@@ -37,9 +36,9 @@ export default function useMessage() {
     );
   };
 
-  const messageAdjusting = async (msg: messageProps) => {
+  const messageAdjusting = (msg: messageProps) => {
     msg.content = msg.content && msg.content.replace(/的/g, "嘅");
-    await pushMessage(msg);
+    return msg;
   };
 
   return {

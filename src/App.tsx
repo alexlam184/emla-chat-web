@@ -35,16 +35,19 @@ function App() {
       liked: false,
     };
     setStopInput(true);
-    pushMessage(arg);
-    pushPrompt(arg);
+    pushMessage([arg]);
+    pushPrompt([arg]);
     const _arg = await openAICalling(prompts);
-    messageAdjusting(_arg);
-    promptAdjusting(_arg);
+    const msg_arg = messageAdjusting(_arg);
+    const prompt_arg = promptAdjusting(_arg);
+    pushMessage([arg, msg_arg]);
+    prompt_arg && pushPrompt([arg, prompt_arg]);
     !muted ? await TTSCalling(_arg.content) : "";
     const parts = _arg.content ? _arg.content.split(/<<e:(.*?)>>/) : "normal";
     setEmotion(parts[1]);
     setStopInput(false);
   };
+
   const handleSTTStart = () => {
     setSpeaking(true);
     STTStart();

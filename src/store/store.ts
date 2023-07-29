@@ -14,7 +14,7 @@ export const useMutedStore = create<MutedState>()(
     persist(
       (set) => ({
         muted: false,
-        setMuted: (muted) => set({ muted }),
+        setMuted: (state) => set({ muted: state }),
       }),
       {
         name: "muted-storage",
@@ -32,7 +32,7 @@ export const useMessageStore = create<MessageState>()(
     persist(
       (set) => ({
         message: "",
-        setMessage: (message) => set({ message }),
+        setMessage: (state) => set({ message: state }),
       }),
       {
         name: "message-storage",
@@ -50,7 +50,9 @@ export const useMessagesStore = create<MessagesState>()(
     persist(
       (set) => ({
         messages: [],
-        setMessages: (messages) => set({ messages }),
+        setMessages: (state) => {
+          set({ messages: state });
+        },
       }),
       {
         name: "messages-storage",
@@ -74,7 +76,9 @@ export const usePromptsStore = create<PromptsState>()(
           },
           ...few_shot_prompts,
         ],
-        setPrompts: (prompts) => set({ prompts }),
+        setPrompts: (state) => {
+          set({ prompts: state });
+        },
       }),
       {
         name: "prompts-storage",
