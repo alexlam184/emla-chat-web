@@ -18,12 +18,12 @@ function MessagesArea(props: MessagesAreaProps) {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [props.loading]);
 
   return (
     <div
       ref={messagesEndRef}
-      className="w-full h-full px-3 py-5 m-5 overflow-y-auto overflow-x-hidden scroll-smooth border-4 rounded-md border-indigo-500"
+      className="w-full h-full px-3 py-5 overflow-x-hidden overflow-y-auto scroll-smooth scrollbar-hide border-4 rounded-md border-indigo-500"
     >
       {messages.map((msg) => (
         <Message key={msg.time} {...msg} />

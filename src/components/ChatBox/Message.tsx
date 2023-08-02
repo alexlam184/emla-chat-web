@@ -1,7 +1,8 @@
 //#region Dependency
 import { Role } from "../../global/data/Enum";
 import { messageProps } from "../../global/data/Interface";
-import { AiFillLike, AiOutlineLike } from "react-icons/ai";
+import like_outline from "../../assets/images/like_outline.png";
+import like_fill from "../../assets/images/like_fill.png";
 import { useState } from "react";
 import useMessage from "../../hook/useMessage";
 //#endregion
@@ -17,7 +18,7 @@ function Message(msg: messageProps) {
       content: msg.content,
       liked: !liked,
     };
-    msg?.time && setMessage(msg.time, _msg);
+    msg.time && setMessage(msg.time, _msg);
     setLiked(!liked);
   };
 
@@ -36,14 +37,14 @@ function Message(msg: messageProps) {
       >
         {/* Message bubble */}
         <div
-          className={`h-auto inline-block rounded-lg py-2 px-3 my-2 ${
+          className={`h-auto inline-block rounded-lg py-2 px-3 my-2 border  ${
             msg.role === Role.User
-              ? "bg-gradient-to-bl from-cyan-600 to-cyan-500 text-white"
-              : "bg-gradient-to-br from-purple-500 to-purple-400 text-black"
+              ? "bg-gradient-to-bl from-cyan-600 to-cyan-500 text-white border-cyan-400"
+              : "bg-gradient-to-br from-purple-500 to-purple-400 text-black border-purple-300"
           }`}
           style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
         >
-          <div className="text-md sm:text-lg">
+          <div className="text-md font-semibold">
             {msg.role === Role.Assistant
               ? msg.content && prompt2message(msg.content)
               : msg.content}
@@ -54,12 +55,12 @@ function Message(msg: messageProps) {
           <div className="flex flex-col items-center justify-center">
             <button
               onClick={handleLike}
-              className="rounded-full w-auto p-2 hover:scale-125 active:scale-95"
+              className="rounded-full w-[50px] p-2 hover:scale-125 active:scale-95"
             >
               {liked ? (
-                <AiFillLike className=" scale-150" />
+                <img src={like_fill} alt="like_fill"></img>
               ) : (
-                <AiOutlineLike className=" scale-150" />
+                <img src={like_outline} alt="like_fill"></img>
               )}
             </button>
           </div>

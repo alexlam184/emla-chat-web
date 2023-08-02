@@ -1,24 +1,46 @@
 //#region Dependency
 import { useEffect } from "react";
 import { Role } from "../../global/data/Enum";
-import { eventArg } from "../../global/data/Interface";
-import { AiOutlineClear, AiOutlineSend } from "react-icons/ai";
-import { BiMicrophone, BiMicrophoneOff } from "react-icons/bi";
+import { messageProps } from "../../global/data/Interface";
+import icon_mute from "../../assets/images/icon_mute.png";
+import icon_unmute from "../../assets/images/icon_unmute.png";
+import icon_clean from "../../assets/images/icon_clean.png";
+import icon_send from "../../assets/images/icon_send.png";
 import {
   useMessageStore,
   useMessagesStore,
   usePromptsStore,
 } from "../../store/store";
-import { systemContent, few_shot_prompts } from "../../global/data/Prompts";
+import { few_shot_prompts } from "../../global/data/Prompts";
 //#endregion
 
 interface InputFieldProps {
-  handleUserSubmit: (arg: eventArg) => void;
+  handleUserSubmit: (arg: messageProps) => void;
   stopInput: boolean;
   handleSTTStart: () => void;
   handleSTTEnd: () => void;
   speaking: boolean;
   recognizedSpeech: string;
+}
+
+interface IconButtonProps {
+  onClick: () => void;
+  disabled: boolean;
+  src: string;
+  alt: string;
+}
+
+function IconButton(props: IconButtonProps) {
+  return (
+    <button
+      onClick={props.onClick}
+      disabled={props.disabled}
+      className="w-auto h-auto scale-[65%] hover:scale-[75%] active:scale-[55%]"
+    >
+      {/* <AiOutlineClear className="scale-150" /> */}
+      <img src={props.src} alt={props.alt} className="" />
+    </button>
+  );
 }
 
 /* Input field of user's messages */
@@ -32,7 +54,7 @@ function InputField(props: InputFieldProps) {
   }, [props.recognizedSpeech]);
 
   const handleSend = () => {
-    const arg: eventArg = {
+    const arg: messageProps = {
       time: Date.now(),
       role: Role.User,
       content: message,
@@ -49,22 +71,21 @@ function InputField(props: InputFieldProps) {
     setPrompts([
       {
         role: Role.System,
-        content: systemContent,
+        content: import.meta.env.VITE_SYSTEM_CONTENT,
       },
       ...few_shot_prompts,
     ]);
   };
 
   return (
-    <div className="flex flex-row w-full h-auto justify-around items-center p-1 space-x-3">
+    <div className="flex flex-row w-full h-auto justify-around items-center space-x-3">
       {/* CleanButton */}
-      <button
+      <IconButton
         onClick={handleClear}
         disabled={props.stopInput}
-        className="p-3 rounded-full bg-slate-200 hover:bg-slate-300 hover:scale-110 active:bg-slate-100 active:scale-95"
-      >
-        <AiOutlineClear className="scale-150" />
-      </button>
+        src={icon_clean}
+        alt="icon_clean"
+      />
       {/* Input Area */}
       <form
         className="w-full"
@@ -83,25 +104,28 @@ function InputField(props: InputFieldProps) {
         />
       </form>
       {/* STTButton */}
-      <button
-        onClick={!props.speaking ? props.handleSTTStart : props.handleSTTEnd}
-        disabled={props.stopInput}
-        className="p-3 rounded-full bg-slate-200 hover:bg-slate-300 hover:scale-110 active:bg-slate-100 active:scale-95"
-      >
-        {props.speaking ? (
-          <BiMicrophone className="scale-150" />
-        ) : (
-          <BiMicrophoneOff className="scale-150" />
-        )}
-      </button>
+      {props.speaking ? (
+        <IconButton
+          onClick={props.handleSTTEnd}
+          disabled={props.stopInput}
+          src={icon_unmute}
+          alt="icon_unmute"
+        />
+      ) : (
+        <IconButton
+          onClick={props.handleSTTStart}
+          disabled={props.stopInput}
+          src={icon_mute}
+          alt="icon_mute"
+        />
+      )}
       {/* SendButton */}
-      <button
+      <IconButton
         onClick={handleSend}
         disabled={props.stopInput || props.speaking || message === ""}
-        className="p-3 rounded-full bg-slate-200 hover:bg-slate-300 hover:scale-110 active:bg-slate-100 active:scale-95"
-      >
-        <AiOutlineSend className="scale-150" />
-      </button>
+        src={icon_send}
+        alt="icon_send"
+      />
     </div>
   );
 }

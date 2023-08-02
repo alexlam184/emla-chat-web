@@ -2,13 +2,24 @@
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import emojiStrip from "emoji-strip";
 import { useState } from "react";
+import useCommon from "../../hook/useCommon";
+import { Base64 } from "js-base64";
 //#endregion
 
+const { outputAdjust } = useCommon();
 const setVoiceText = (text: string | undefined) => {
+  text = outputAdjust({ content: text }).content;
   if (text) {
     text = emojiStrip(text);
-    let parts = text.split("<<").join("").split(">>");
-    text = parts[1];
+    text = text.replace(/```[\s\S]*?```/g, "");
+    text = text.replace(/'''[\s\S]*?'''/g, "");
+    text = text.replace(/<<[\s\S]*?>>/g, "");
+    text = text.replace(/([\s\S]*?)/g, "");
+    text = text.replace(/</g, "左箭咀");
+    text = text.replace(/<</g, "左箭咀");
+    text = text.replace(/>>/g, "右箭咀");
+    text = text.replace(/>/g, "右箭咀");
+    console.log("voice text:", text);
     return text;
   } else {
     return "回應出錯！";
@@ -33,7 +44,7 @@ const vitsCalling = async () => {
 
 //#region speech Config
 const speechConfig = sdk.SpeechConfig.fromSubscription(
-  "ff4c272469de4256a6f759f71abc3be6",
+  Base64.decode(import.meta.env.VITE_MICROSOFT_API_KEY),
   "eastasia"
 );
 speechConfig.speechSynthesisLanguage = "zh-HK"; // set the language to Cantonese
@@ -69,7 +80,12 @@ const createVoiceXML = (
 export const useSpeechAI = (handleSTTEnd: () => void) => {
   const [recognizedSpeech, setRecognizedSpeech] = useState("");
   const TTSCalling = async (text: string | undefined) => {
-    const speechSynthesizer = new sdk.SpeechSynthesizer(speechConfig);
+    const player = new sdk.SpeakerAudioDestination();
+    const audioConfig = sdk.AudioConfig.fromSpeakerOutput(player);
+    const speechSynthesizer = new sdk.SpeechSynthesizer(
+      speechConfig,
+      audioConfig
+    );
     const ssml = createVoiceXML(
       speechConfig.speechSynthesisLanguage,
       speechConfig.speechSynthesisVoiceName,
@@ -78,22 +94,31 @@ export const useSpeechAI = (handleSTTEnd: () => void) => {
       0.0,
       10.0
     );
-    speechSynthesizer.speakSsmlAsync(
-      ssml,
-      (result) => {
-        if (result.errorDetails) {
-          console.error(result.errorDetails);
-        } else {
-          console.log(JSON.stringify(result));
+    player.onAudioStart = (s) => {
+      player.pause();
+    };
+    return new Promise<ArrayBuffer>((resolve, reject) => {
+      let audioData: ArrayBuffer = new ArrayBuffer(0);
+      speechSynthesizer.speakSsmlAsync(
+        ssml,
+        (result) => {
+          if (result.errorDetails) {
+            console.error(result.errorDetails);
+            reject(result.errorDetails);
+          } else {
+            console.log(JSON.stringify(result));
+            audioData = result.audioData;
+            resolve(audioData);
+          }
+          speechSynthesizer.close();
+        },
+        (error) => {
+          console.log(error);
+          speechSynthesizer.close();
+          reject(error);
         }
-
-        speechSynthesizer.close();
-      },
-      (error) => {
-        console.log(error);
-        speechSynthesizer.close();
-      }
-    );
+      );
+    });
   };
 
   let speechRecognizer = new sdk.SpeechRecognizer(speechConfig);

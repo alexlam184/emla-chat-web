@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { messageProps, promptProps } from "../global/data/Interface";
 import { Role } from "../global/data/Enum";
-import { systemContent, few_shot_prompts } from "../global/data/Prompts";
+import { few_shot_prompts } from "../global/data/Prompts";
 
 interface MutedState {
   muted: boolean;
@@ -72,7 +72,7 @@ export const usePromptsStore = create<PromptsState>()(
         prompts: [
           {
             role: Role.System,
-            content: systemContent,
+            content: import.meta.env.VITE_SYSTEM_CONTENT,
           },
           ...few_shot_prompts,
         ],
