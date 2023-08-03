@@ -6,6 +6,7 @@ export default {
       colors: {
         themeturnede: "#00df9a",
       },
+      fontFamily: {},
     },
   },
   plugins: [],
