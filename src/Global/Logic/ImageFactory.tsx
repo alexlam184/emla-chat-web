@@ -1,20 +1,33 @@
-import { ImageDictionary } from "../Data/ImageDictionary";
+import { ImageDictionary } from "../data/ImageDictionary";
 
-interface ImageFactoryProps {
-  imgContent: string;
+interface ImageFactoryProp {
+  msg: string;
 }
 
 /* Return the image component by searching the image dictionary */
-function ImageFactory(props: ImageFactoryProps) {
+function ImageFactory(props: ImageFactoryProp) {
   const imgDict = ImageDictionary;
   let src = null;
   let alt = "null";
 
   imgDict.map((item) => {
-    if (item.key === props.imgContent) {
-      src = item.value.src;
-      alt = item.value.alt;
-      return;
+    let boolFlag = false;
+    item.negative_key.map((nkey) => {
+      if (props.msg.toLowerCase().includes(nkey)) {
+        boolFlag = true;
+        return;
+      }
+    });
+    if (!boolFlag) {
+      item.key.map((key) => {
+        if (props.msg.toLowerCase().includes(key)) {
+          src = item.value.src;
+          alt = item.value.src;
+          boolFlag = true;
+          return;
+        }
+      });
+      if (boolFlag) return;
     }
   });
 

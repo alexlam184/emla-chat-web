@@ -1,78 +1,130 @@
-import { OnOpenAIStart } from "../Events/EventHandler";
-import { Configuration, OpenAIApi } from "openai";
-import { PromptManager } from "./PromptManager";
-import { MessageManager } from "./MessageManager";
-import { Role, Model } from "../Data/Enum";
+//#region Dependency
+import { Role } from "../data/Enum";
+import { messageSettings } from "../data/Prompts";
+import { messageProps, promptProps } from "../data/Interface";
+import { Base64 } from "js-base64";
+import axios from "axios";
+import { useDemoPrompt } from "../../hook/useDemoPrompt";
+//#endregion
 
-export class OpenAIManager {
-  /*Model Properties*/
-  private OPENAI_APIKEY = "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";
-  private model = Model.gpt3_turbo_16k;
-  private max_tokens = 2000;
-  private stop = "<<END>>";
-  private temperature = 0.0;
-  private frequency_penalty = 1.0;
-  private presence_penalty = 1.3;
+const openaiApi = axios.create({
+  headers: {
+    Authorization:
+      "Bearer " + Base64.decode(import.meta.env.VITE_OPENAI_API_KEY),
+    "Content-Type": "application/json",
+  },
+});
 
-  /*Prompt Properties*/
-  private userPrefix = "請使用廣東話同穿插emoji。請遵守<<i:>>規則。";
-  private userProfix = "(100字)";
-  private assistantPrefix = "";
-  private assistantProfix = "<<END>>";
+/* const configuration = new Configuration({
+  apiKey: Base64.decode(import.meta.env.VITE_OPENAI_API_KEY),
+}); */
 
-  /* Singleton Pattern */
-  private static instance: OpenAIManager;
-  public static getInstance(): OpenAIManager {
-    if (!OpenAIManager.instance) {
-      OpenAIManager.instance = new OpenAIManager();
-    }
-    return OpenAIManager.instance;
+//const openai = new OpenAIApi(configuration);
+
+const getOutput = async (
+  model: any,
+  meessages: Array<promptProps>,
+  max_tokens: any,
+  stop: string,
+  temperature: any,
+  frequency_penalty: any,
+  presence_penalty: any
+) => {
+  const demo_value = useDemoPrompt(
+    meessages[meessages.length - 1].content as string
+  );
+  console.log(meessages[meessages.length - 1].content as string);
+  if (demo_value !== "") {
+    return demo_value;
   }
 
-  constructor() {
-    this.APICalling = this.APICalling.bind(this);
-    const openAIEvent = OnOpenAIStart.getInstance();
-    openAIEvent.subscribe(this.APICalling);
-  }
-
-  private async APICalling() {
-    console.log("API CALLING...");
-    const configuration = new Configuration({
-      apiKey: this.OPENAI_APIKEY,
-    });
-    const openai = new OpenAIApi(configuration);
-
-    const promptManager = PromptManager.getInstance();
-    let prompts: any = [];
-    promptManager.getPrompt().map((prompt) => {
-      prompt.role === Role.User
-        ? (prompt.content = this.userPrefix + prompt.content + this.userProfix)
-        : (prompt.content =
-            this.assistantPrefix + prompt.content + this.assistantProfix);
-      prompts = [...prompts, prompt];
-    });
-
-    const GPTModule = async (prompts: any) => {
+  const GPTModule = async (prompts: any) => {
+    /*  try {
       const response = await openai.createChatCompletion({
-        model: this.model,
+        model: model,
         messages: prompts,
-        max_tokens: this.max_tokens,
-        stop: this.stop,
-        temperature: this.temperature,
-        frequency_penalty: this.frequency_penalty,
-        presence_penalty: this.presence_penalty,
+        max_tokens: max_tokens,
+        stop: stop,
+        temperature: temperature,
+        frequency_penalty: frequency_penalty,
+        presence_penalty: presence_penalty,
       });
       return response.data.choices[0].message?.content;
+    } catch (error) {
+      console.error("An error occurred:", error);
+      return "" + error;
+    } */
+    const params: any = {
+      model: model,
+      messages: prompts,
+      max_tokens: max_tokens,
+      stop: stop,
+      temperature: temperature,
+      frequency_penalty: frequency_penalty,
+      presence_penalty: presence_penalty,
     };
+    let output = "回應出錯";
+    await openaiApi
+      .post(import.meta.env.VITE_OPENAI_API_URL, params)
+      .then((response) => {
+        output = response.data.choices[0].message?.content;
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+        output = "" + error;
+      });
+    return output;
+  };
+  const output = (await GPTModule(meessages as any)) as string;
 
-    const output = (await GPTModule(prompts)) as string;
-    const msgManager = MessageManager.getInstance();
-    msgManager.pushMessage({
+  return output;
+};
+
+export const useOpenAI = () => {
+  const openAICalling = async (prompts: Array<promptProps>) => {
+    console.log("openAI CALLING...");
+    const prompts_api: Array<promptProps> = prompts.map(
+      (prompt: promptProps) => {
+        return {
+          role: prompt.role,
+          content:
+            prompt.role === Role.User
+              ? messageSettings.userPrefix +
+                prompt.content +
+                messageSettings.userProfix
+              : messageSettings.assistantPrefix +
+                prompt.content +
+                messageSettings.assistantProfix,
+        };
+      }
+    );
+    /* prompts_api[i].content =
+        prompts_api[i].role === Role.User
+        ? messageSettings.userPrefix +
+          prompts_api[i].content +
+          messageSettings.userProfix
+        : messageSettings.assistantPrefix +
+          prompts_api[i].content +
+          messageSettings.assistantProfix;
+ */
+    const output = await getOutput(
+      messageSettings.model,
+      prompts_api,
+      messageSettings.max_tokens,
+      messageSettings.stop,
+      messageSettings.temperature,
+      messageSettings.frequency_penalty,
+      messageSettings.presence_penalty
+    );
+    const _arg: messageProps = {
       time: Date.now(),
       role: Role.Assistant,
       content: output,
       liked: false,
-    });
-    promptManager.promptAdjusting(output);
-  }
-}
+    };
+
+    return _arg;
+  };
+
+  return { openAICalling };
+};

@@ -1,62 +1,43 @@
-import { useState, useEffect, useRef } from "react";
+//#region Dependency
+import { useEffect, useRef } from "react";
 import Message from "./Message";
-import { MessageProps } from "../../Global/Data/Interface";
-import {
-  OnAPIsEnd,
-  OnUserSubmitEnd,
-  OnUserSubmitStart,
-} from "../../Global/Events/EventHandler";
-import { MessageManager } from "../../Global/Logic/MessageManager";
 import LoadingMessage from "./LoadingMessage";
+import useMessage from "../../hook/useMessage";
+//#endregion
 
-function MessagesArea() {
-  const msgManager = MessageManager.getInstance();
-  const [messages, setMessages] = useState<Array<MessageProps>>(
-    msgManager.getMessage()
-  );
-  const [loading, setLoading] = useState<boolean>(false);
+interface MessagesAreaProps {
+  loading: boolean;
+  speaking: boolean;
+}
+
+function MessagesArea(props: MessagesAreaProps) {
+  const { messages } = useMessage();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  OnUserSubmitStart.getInstance().subscribe(() => {
-    console.log("Show loading message.");
-    setLoading(true);
-  });
-  OnUserSubmitEnd.getInstance().subscribe(() => {
-    console.log("Update messages.");
-    setMessages([...msgManager.getMessage()]);
-  });
-  OnAPIsEnd.getInstance().subscribe(() => {
-    console.log("Update messages.");
-    setMessages([...msgManager.getMessage()]);
-    console.log("Remove loading message.");
-    setLoading(false);
-  });
-
-  useEffect(() => {
-    setMessages([...msgManager.getMessage()]);
-  }, []);
 
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [props.loading]);
 
   return (
     <div
       ref={messagesEndRef}
-      className="w-full h-full px-3 py-5 m-5 overflow-y-auto overflow-x-hidden scroll-smooth border-4 rounded-md border-indigo-500"
+      className="w-full h-full px-3 py-5 overflow-x-hidden overflow-y-auto scroll-smooth scrollbar-hide border-4 rounded-md border-indigo-500"
     >
       {messages.map((msg) => (
-        <Message
-          key={msg.time}
-          time={msg.time}
-          role={msg.role}
-          content={msg.content}
-          liked={msg.liked}
-        />
+        <Message key={msg.time} {...msg} />
       ))}
-      {loading ? <LoadingMessage /> : ""}
+      {props.loading ? (
+        <LoadingMessage loadingMsg="Elma is thinking。。。" />
+      ) : (
+        ""
+      )}
+      {props.speaking ? (
+        <LoadingMessage loadingMsg="Sound Recording。。。" />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

@@ -1,20 +1,27 @@
-import { Role } from "../../Global/Data/Enum";
-import { IconButton } from "@mui/material";
-import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import { MessageManager } from "../../Global/Logic/MessageManager";
-import { MessageProps } from "../../Global/Data/Interface";
+//#region Dependency
+import { Role } from "../../global/data/Enum";
+import { messageProps } from "../../global/data/Interface";
+import like_outline from "../../assets/images/like_outline.png";
+import like_fill from "../../assets/images/like_fill.png";
 import { useState } from "react";
+import useMessage from "../../hook/useMessage";
+//#endregion
 
 /* Behavior of a single message */
-function Message(msg: MessageProps) {
-  /* Get the instance of the prompt manager */
-  const pm = MessageManager.getInstance();
-
-  const [liked, setLiked] = useState<boolean>(false);
+function Message(msg: messageProps) {
+  const [liked, setLiked] = useState(msg.liked);
+  const { prompt2message, setMessage } = useMessage();
   const handleLike = () => {
+    const _msg: messageProps = {
+      time: msg.time,
+      role: msg.role,
+      content: msg.content,
+      liked: !liked,
+    };
+    msg.time && setMessage(msg.time, _msg);
     setLiked(!liked);
   };
+
   return (
     <div
       className={`flex felx-row w-full h-auto m-1 ${
@@ -30,21 +37,32 @@ function Message(msg: MessageProps) {
       >
         {/* Message bubble */}
         <div
-          className={`h-auto inline-block rounded-lg py-2 px-3 my-2 ${
+          className={`h-auto inline-block rounded-lg py-2 px-3 my-2 border  ${
             msg.role === Role.User
-              ? "bg-gradient-to-bl from-cyan-600 to-cyan-500 text-white"
-              : "bg-gradient-to-br from-purple-500 to-purple-400 text-black"
+              ? "bg-gradient-to-bl from-cyan-600 to-cyan-500 text-white border-cyan-400"
+              : "bg-gradient-to-br from-purple-500 to-purple-400 text-black border-purple-300"
           }`}
           style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
         >
-          <div className="text-xl">{pm.prompt2message(msg.content)}</div>
+          <div className="text-md font-semibold">
+            {msg.role === Role.Assistant
+              ? msg.content && prompt2message(msg.content)
+              : msg.content}
+          </div>
         </div>
         {/* Thumb Button */}
         {msg.role === Role.Assistant ? (
-          <div className="flex h-full w-auto items-center">
-            <IconButton onClick={handleLike}>
-              {liked ? <ThumbUpIcon /> : <ThumbUpOffAltOutlinedIcon />}
-            </IconButton>
+          <div className="flex flex-col items-center justify-center">
+            <button
+              onClick={handleLike}
+              className="rounded-full w-[50px] p-2 hover:scale-125 active:scale-95"
+            >
+              {liked ? (
+                <img src={like_fill} alt="like_fill"></img>
+              ) : (
+                <img src={like_outline} alt="like_fill"></img>
+              )}
+            </button>
           </div>
         ) : (
           ""
