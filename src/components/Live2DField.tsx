@@ -93,12 +93,15 @@ function Live2DField(props: Live2DFieldProps) {
     };
     const setMouthOpenY = (v: number) => {
       v = Math.max(0, Math.min(1, v));
+
       model &&
+        //@ts-ignore
         model.internalModel.coreModel.setParameterValueById(
           "ParamMouthOpenY",
           v
         );
       model &&
+        //@ts-ignore
         model.internalModel.coreModel.setParameterValueById(
           "ParamMouthForm",
           v
