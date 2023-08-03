@@ -1,12 +1,7 @@
 //#region dependencies
 import { useEffect } from "react";
-import {
-  Live2DModel,
-  config,
-  InternalModel,
-} from "pixi-live2d-display/cubism4";
+import { Live2DModel, config, InternalModel } from "pixi-live2d-display";
 import * as PIXI from "pixi.js";
-import MuteSwitch from "./MuteSwitch";
 import { Ticker } from "@pixi/ticker";
 //#endregion
 
@@ -40,24 +35,31 @@ function Live2DField(props: Live2DFieldProps) {
 
   useEffect(() => {
     const app = new PIXI.Application({
-      view: document.getElementById("canvas"),
+      view:
+        (document.getElementById("canvas") as HTMLCanvasElement) ?? undefined,
       autoStart: true,
-      backgroundAlpha: 0,
-      autoDensity: true,
-      resizeTo: window,
+      backgroundAlpha: 0.0,
+      resizeTo: document.getElementById("elmaContainer") ?? undefined,
     });
+    app.renderer.plugins.interaction.destroy(); // Remove the default interaction manager
 
     const loadModels = async () => {
       model = await Live2DModel.from(cubism4Model);
       app.stage.addChild(model);
 
       model.scale.set(0.5);
-
-      model.x = -250;
-      model.y = 0;
-      model.zIndex = -50;
+      model.anchor.set(0.2, 0);
+      // model.x =
+      //   ((document.getElementById("elmaContainer")?.offsetWidth ?? 700) / 3) *
+      //   -1;
+      // model.y =
+      //   (document.getElementById("elmaContainer")?.offsetHeight ?? 700) / 100.0;
+      // model.zIndex = -50;
     };
     loadModels();
+    return () => {
+      //model?.destroy();
+    };
   }, []);
 
   useEffect(() => {
@@ -102,14 +104,14 @@ function Live2DField(props: Live2DFieldProps) {
           v
         );
     };
-    const o: number = 80;
+    const mouthCloseSize: number = 10;
     const arrayAdd = (a: number[]): number => a.reduce((i, a) => i + a, 0);
 
     const run = (): void => {
       if (!playing) return;
       const frequencyData: Uint8Array = getByteFrequencyData();
       const arr: number[] = [];
-      for (let i: number = 0; i < 700; i += o) {
+      for (let i: number = 0; i < 700; i += mouthCloseSize) {
         arr.push(frequencyData[i]);
       }
       setMouthOpenY((arrayAdd(arr) / arr.length - 20) / 60);
@@ -118,14 +120,7 @@ function Live2DField(props: Live2DFieldProps) {
     run();
   }, [props.audioData]);
 
-  return (
-    <div className="flex flex-col h-full items-start font-bold">
-      <div className="scale-150 absolute transform translate-x-[150px] translate-y-[225px]">
-        <MuteSwitch />
-      </div>
-      <canvas id="canvas"></canvas>
-    </div>
-  );
+  return <canvas id="canvas"></canvas>;
 }
 
 export default Live2DField;

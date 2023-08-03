@@ -5,7 +5,7 @@ import sound_off from "../assets/images/sound_off.png";
 export default function MuteSwitch() {
   const { muted, setMuted } = useMutedStore();
   return (
-    <div className="flex flex-row h-full w-auto items-center justify-center">
+    <div className="flex flex-row h-full w-auto items-center justify-center scale-150">
       <label
         className={`relative block h-[25px] w-[50px] rounded-full bg-black border border-white`}
       >

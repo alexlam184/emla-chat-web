@@ -8,8 +8,9 @@ export default function useCommon() {
     return text;
   };
   const outputAdjust = (text: messageProps) => {
+    text.content = tify(text.content);
     if (text.content) {
-      text.content = tify(text.content);
+      text.content = text.content.replace(/』s/g, "'s");
       text.content = text.content.replace(/很/g, "好");
       text.content = text.content.replace(/的/g, "嘅");
       text.content = text.content.replace(/們/g, "哋");
@@ -34,6 +35,7 @@ export default function useCommon() {
       text.content = text.content.replace(/好想/g, "好似");
       text.content = text.content.replace(/不同/g, "唔同");
       text.content = text.content.replace(/才能/g, "先能");
+      text.content = text.content.replace(/還有/g, "仲有");
     }
     return text;
   };

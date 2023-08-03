@@ -1,7 +1,7 @@
 //#region Dependency
 import InputField from "./components/ChatBox/InputField";
 import MessagesArea from "./components/ChatBox/MessagesArea";
-import Live2DField from "./components/Live2DModel";
+import Live2DField from "./components/Live2DField";
 import Elma_bg from "./assets/images/bg.png";
 import Upperfield from "./components/ChatBox/Upperfield";
 import { useState } from "react";
@@ -13,6 +13,7 @@ import { useSpeechAI } from "./global/logic/SpeechAIManager";
 import { useMessageStore, useMutedStore } from "./store/store";
 import { Role } from "./global/data/Enum";
 import title from "./assets/images/title.png";
+import MuteSwitch from "./components/MuteSwitch";
 //#endregion
 
 function App() {
@@ -87,39 +88,42 @@ function App() {
   return (
     <>
       {/* Background  */}
-      <div className="h-5/6 ">
-        <div className=" h-screen w-full absolute" />
-        {/* Content*/}
-        <div className="flex h-screen overflow-hidden">
-          {/*Live2D Model Container*/}
-          <div className="absolute h-screen -z-50 overflow-hidden bg-blue-300">
-            <img
-              src={Elma_bg}
-              alt="elma_model"
-              className="h-screen w-screen overflow-hidden"
-            />
+      <div className="absolute h-screen -z-50 overflow-hidden bg-blue-300">
+        <img
+          src={Elma_bg}
+          alt="elma_model"
+          className="h-screen w-screen overflow-hidden"
+        />
+      </div>
+      {/* Content*/}
+      <div className="flex h-screen overflow-hidden">
+        {/*Live2D Model Container*/}
+        <div
+          id="elmaContainer"
+          className="flex flex-col sm:w-[45%] sm:visible invisible items-start"
+        >
+          <div className="scale-75 absolute">
+            <img src={title} alt="title" className="scale-75 -z-30"></img>
+            <div className="flex flex-col w-full items-center">
+              <MuteSwitch />
+            </div>
           </div>
-          <div className="w-0 sm:w-[45%] sm:visible invisible">
-            <img
-              src={title}
-              alt="title"
-              className="absolute scale-75 transform translate-x-[-40px] translate-y-[30px] -z-30"
-            ></img>
+          <div className="flex flex-row w-full h-full items-start">
             <Live2DField emotion={emotion} audioData={audioData} />
           </div>
-          {/*Chat Box*/}
-          <div className="flex flex-col w-full sm:w-[55%] p-1 items-center justify-center z-10">
-            <Upperfield />
-            <MessagesArea loading={stopInput} speaking={speaking} />
-            <InputField
-              handleUserSubmit={handleUserSubmit}
-              stopInput={stopInput}
-              handleSTTStart={handleSTTStart}
-              handleSTTEnd={handleSTTEnd}
-              speaking={speaking}
-              recognizedSpeech={recognizedSpeech}
-            />
-          </div>
+        </div>
+        {/*Chat Box*/}
+        <div className="flex flex-col w-full sm:w-[55%] p-1 items-center justify-center z-10">
+          <Upperfield />
+          <MessagesArea loading={stopInput} speaking={speaking} />
+          <InputField
+            handleUserSubmit={handleUserSubmit}
+            stopInput={stopInput}
+            handleSTTStart={handleSTTStart}
+            handleSTTEnd={handleSTTEnd}
+            speaking={speaking}
+            recognizedSpeech={recognizedSpeech}
+          />
         </div>
       </div>
     </>
