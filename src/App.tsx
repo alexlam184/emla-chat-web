@@ -10,7 +10,7 @@ import { messageProps, promptProps } from "./global/data/Interface";
 import usePrompt from "./hook/usePrompt";
 import { useOpenAI } from "./global/logic/OpenAIManager";
 import { useSpeechAI } from "./global/logic/SpeechAIManager";
-import { useMessageStore, useMutedStore } from "./store/store";
+import { useInputMessageStore, useMutedStore } from "./store/store";
 import { Role } from "./global/data/Enum";
 import title from "./assets/images/title.png";
 import MuteSwitch from "./components/MuteSwitch";
@@ -33,7 +33,7 @@ function App() {
   });
 
   //Messages & Prompts Management
-  const { message } = useMessageStore();
+  const { message } = useInputMessageStore();
   const { pushMessage, messageAdjusting } = useMessage();
   const { prompts, pushPrompt, promptAdjusting } = usePrompt();
 

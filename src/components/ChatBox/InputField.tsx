@@ -7,7 +7,7 @@ import icon_unmute from "../../assets/images/icon_unmute.png";
 import icon_clean from "../../assets/images/icon_clean.png";
 import icon_send from "../../assets/images/icon_send.png";
 import {
-  useMessageStore,
+  useInputMessageStore,
   useMessagesStore,
   usePromptsStore,
 } from "../../store/store";
@@ -45,7 +45,7 @@ function IconButton(props: IconButtonProps) {
 
 /* Input field of user's messages */
 function InputField(props: InputFieldProps) {
-  const { message, setMessage } = useMessageStore();
+  const { message, setMessage } = useInputMessageStore();
 
   useEffect(() => {
     if (props.speaking) {

@@ -23,11 +23,11 @@ export const useMutedStore = create<MutedState>()(
   )
 );
 
-interface MessageState {
+interface InputMesssageState {
   message: string;
   setMessage: (message: string) => void;
 }
-export const useMessageStore = create<MessageState>()(
+export const useInputMessageStore = create<InputMesssageState>()(
   devtools(
     persist(
       (set) => ({
@@ -35,7 +35,7 @@ export const useMessageStore = create<MessageState>()(
         setMessage: (state) => set({ message: state }),
       }),
       {
-        name: "message-storage",
+        name: "input-message-storage",
       }
     )
   )
