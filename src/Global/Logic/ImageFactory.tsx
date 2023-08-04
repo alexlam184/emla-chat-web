@@ -7,7 +7,7 @@ interface ImageFactoryProp {
 /* Return the image component by searching the image dictionary */
 function ImageFactory(props: ImageFactoryProp) {
   const imgDict = ImageDictionary;
-  let src = null;
+  let src = "";
   let alt = "null";
 
   imgDict.map((item) => {
@@ -31,7 +31,7 @@ function ImageFactory(props: ImageFactoryProp) {
     }
   });
 
-  return src !== null ? <img src={src} alt={alt} /> : <></>;
+  return src !== "" ? <img src={src} alt={alt} /> : <></>;
 }
 
 export default ImageFactory;

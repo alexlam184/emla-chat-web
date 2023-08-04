@@ -1,7 +1,6 @@
 //#region Dependency
 import { useEffect } from "react";
 import { Role } from "../../global/data/Enum";
-import { messageProps } from "../../global/data/Interface";
 import icon_mute from "../../assets/images/icon_mute.png";
 import icon_unmute from "../../assets/images/icon_unmute.png";
 import icon_clean from "../../assets/images/icon_clean.png";
@@ -15,7 +14,7 @@ import { few_shot_prompts } from "../../global/data/Prompts";
 //#endregion
 
 interface InputFieldProps {
-  handleUserSubmit: (arg: messageProps) => void;
+  handleUserSubmit: () => Promise<void>;
   stopInput: boolean;
   handleSTTStart: () => void;
   handleSTTEnd: () => void;
@@ -51,16 +50,10 @@ function InputField(props: InputFieldProps) {
     if (props.speaking) {
       setMessage(message + props.recognizedSpeech);
     }
-  }, [props.recognizedSpeech]);
+  });
 
   const handleSend = () => {
-    const arg: messageProps = {
-      time: Date.now(),
-      role: Role.User,
-      content: message,
-      liked: false,
-    };
-    props.handleUserSubmit(arg);
+    props.handleUserSubmit();
     setMessage("");
   };
 

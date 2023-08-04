@@ -1,7 +1,7 @@
-import { demo_prompts } from "../global/data/DemoPrompts";
-import { messageSettings } from "../global/data/Prompts";
+import { demo_prompts } from "../data/DemoPrompts";
+import { messageSettings } from "../data/Prompts";
 
-export const useDemoPrompt = (text: string) => {
+export const getDemoPrompt = (text: string) => {
   let demo_value = "";
   demo_prompts.map((demo) => {
     if (

@@ -14,6 +14,7 @@ import { useInputMessageStore, useMutedStore } from "./store/store";
 import { Role } from "./global/data/Enum";
 import title from "./assets/images/title.png";
 import MuteSwitch from "./components/MuteSwitch";
+import { useRef } from "react";
 //#endregion
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
   const [emotion, setEmotion] = useState("normal");
 
   //Boolean Flags
-  const [stopInput, setStopInput] = useState(false);
+  const stopInput = useRef(false);
   const [speaking, setSpeaking] = useState(false);
   const { muted } = useMutedStore();
 
@@ -38,9 +39,9 @@ function App() {
   const { prompts, pushPrompt, promptAdjusting } = usePrompt();
 
   const handleUserSubmit = async () => {
-    setStopInput(true);
-
-    //#region Save User's Input
+    stopInput.current = true;
+    console.log(stopInput.current);
+    //Save User Input
     const input: messageProps = {
       time: Date.now(),
       role: Role.User,
@@ -49,7 +50,6 @@ function App() {
     };
     pushMessage([input]);
     pushPrompt([input]);
-    //#endregion
 
     //Get OpenAI response
     const output = await openAICalling([
@@ -75,7 +75,7 @@ function App() {
       : "normal";
     setEmotion(parts[1]);
 
-    setStopInput(false);
+    stopInput.current = false;
   };
 
   const handleSTTStart = () => {
@@ -115,10 +115,10 @@ function App() {
         {/*Chat Box*/}
         <div className="flex flex-col w-full sm:w-[55%] p-1 items-center justify-center z-10">
           <Upperfield />
-          <MessagesArea loading={stopInput} speaking={speaking} />
+          <MessagesArea loading={stopInput.current} speaking={speaking} />
           <InputField
             handleUserSubmit={handleUserSubmit}
-            stopInput={stopInput}
+            stopInput={stopInput.current}
             handleSTTStart={handleSTTStart}
             handleSTTEnd={handleSTTEnd}
             speaking={speaking}

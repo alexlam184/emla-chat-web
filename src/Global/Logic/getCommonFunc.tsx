@@ -1,10 +1,10 @@
-import { messageProps } from "../global/data/Interface";
+import { messageProps } from "../data/Interface";
 import { tify } from "chinese-conv";
 
-export default function useCommon() {
+export default function getCommonFunc() {
   const inputAdjust = (text: messageProps) => {
-    if (text.content) {
-    }
+    /*     if (text.content) {
+    } */
     return text;
   };
   const outputAdjust = (text: messageProps) => {
@@ -13,7 +13,6 @@ export default function useCommon() {
       text.content = text.content.replace(/』s/g, "'s");
       text.content = text.content.replace(/很/g, "好");
       text.content = text.content.replace(/的/g, "嘅");
-      text.content = text.content.replace(/們/g, "哋");
       text.content = text.content.replace(/不行/g, "唔得");
       text.content = text.content.replace(/這/g, "呢");
       text.content = text.content.replace(/找/g, "揾");
