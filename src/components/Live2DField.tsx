@@ -49,12 +49,6 @@ function Live2DField(props: Live2DFieldProps) {
 
       model.scale.set(0.5);
       model.anchor.set(0.2, 0);
-      // model.x =
-      //   ((document.getElementById("elmaContainer")?.offsetWidth ?? 700) / 3) *
-      //   -1;
-      // model.y =
-      //   (document.getElementById("elmaContainer")?.offsetHeight ?? 700) / 100.0;
-      // model.zIndex = -50;
     };
     loadModels();
     return () => {
@@ -107,14 +101,14 @@ function Live2DField(props: Live2DFieldProps) {
           v
         );
     };
-    const mouthCloseSize: number = 10;
+    const mouthSlicePropotion = 10;
     const arrayAdd = (a: number[]): number => a.reduce((i, a) => i + a, 0);
 
     const run = (): void => {
       if (!playing) return;
       const frequencyData: Uint8Array = getByteFrequencyData();
       const arr: number[] = [];
-      for (let i: number = 0; i < 700; i += mouthCloseSize) {
+      for (let i = 0; i < 700; i += mouthSlicePropotion) {
         arr.push(frequencyData[i]);
       }
       setMouthOpenY((arrayAdd(arr) / arr.length - 20) / 60);

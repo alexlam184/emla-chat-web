@@ -2,12 +2,12 @@
 import { messageProps, promptProps } from "../global/data/Interface";
 import { Role } from "../global/data/Enum";
 import { usePromptsStore } from "../store/store";
-import useCommon from "./useCommon";
+import getCommonFunc from "../global/logic/getCommonFunc";
 //#endregion
 
 export default function usePrompt() {
   const { prompts, setPrompts } = usePromptsStore();
-  const { outputAdjust } = useCommon();
+  const { outputAdjust } = getCommonFunc();
 
   const pushPrompt = (_prompts: Array<messageProps>) => {
     const tuned_prompts: Array<promptProps> = _prompts.map((prompt) => {
