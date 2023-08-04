@@ -47,8 +47,33 @@ function Live2DField(props: Live2DFieldProps) {
       model = await Live2DModel.from(cubism4Model);
       app.stage.addChild(model);
 
-      model.scale.set(0.5);
-      model.anchor.set(0.2, 0);
+      const offsetX = 50;
+      const offsetY = 1050;
+      const sizeScale = 3;
+
+      const resizeModel = () => {
+        if (!model) return;
+        const canvasWidth = app.view.width;
+        const canvasHeight = app.view.height;
+        const modelWidth = model.width;
+        const modelHeight = model.height;
+
+        const scaleFactor = Math.min(
+          canvasWidth / modelWidth,
+          canvasHeight / modelHeight
+        );
+
+        model.scale.set(scaleFactor * sizeScale);
+        model.x =
+          (canvasWidth - modelWidth * scaleFactor * sizeScale) / 2 +
+          offsetX * scaleFactor * sizeScale;
+        model.y =
+          (canvasHeight - modelHeight * scaleFactor * sizeScale) / 2 +
+          offsetY * scaleFactor * sizeScale;
+      };
+
+      resizeModel();
+      window.addEventListener("resize", resizeModel);
     };
     loadModels();
     return () => {
@@ -78,8 +103,6 @@ function Live2DField(props: Live2DFieldProps) {
         playing = false;
       };
     });
-    //};
-    //request.send();
 
     const getByteFrequencyData = () => {
       analyser.getByteFrequencyData(frequencyData);
