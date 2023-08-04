@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Live2DModel, config, InternalModel } from "pixi-live2d-display";
 import * as PIXI from "pixi.js";
 import { Ticker } from "@pixi/ticker";
+
 //#endregion
 
 // log level
@@ -31,7 +32,8 @@ let model: Live2DModel<InternalModel> | null = null;
 function Live2DField(props: Live2DFieldProps) {
   // register Ticker for Live2DModel
   Live2DModel.registerTicker(Ticker);
-  const cubism4Model = "src\\assets\\model\\未命名\\未命名.model3.json";
+  // const cubism4Model = "src\\assets\\model\\未命名\\未命名.model3.json";
+  // const cubism4Model = useRef(undefined);
 
   useEffect(() => {
     const app = new PIXI.Application({
@@ -44,7 +46,9 @@ function Live2DField(props: Live2DFieldProps) {
     app.renderer.plugins.interaction.destroy(); // Remove the default interaction manager
 
     const loadModels = async () => {
-      model = await Live2DModel.from(cubism4Model);
+      model = await Live2DModel.from(
+        "https://cdn.jsdelivr.net/gh/guansss/pixi-live2d-display/test/assets/haru/haru_greeter_t03.model3.json"
+      );
       app.stage.addChild(model);
 
       model.scale.set(0.5);
