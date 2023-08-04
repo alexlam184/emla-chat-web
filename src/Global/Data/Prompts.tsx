@@ -43,7 +43,7 @@ export const few_shot_prompts: Array<promptProps> = [
 export const messageSettings = {
   /*Model Properties*/
   model: Model.gpt3_turbo_16k,
-  max_tokens: 10000,
+  max_tokens: 2000,
   stop: "",
   temperature: 0.7,
   frequency_penalty: 1.0,
@@ -51,18 +51,8 @@ export const messageSettings = {
 
   /*Prompt Properties*/
   userPrefix:
-    "請使用繁體廣東話同大量使用emoji。當牽涉到專業知識，你必須使用日常生活比喻協助解釋，其他情況你唔應該使用比喻。上述指令你唔洗提及，跟從就可以。",
+    "請使用繁體廣東話同大量使用emoji。當我要求你講解專業知識，你必須使用日常生活比喻協助解釋，其他情況你唔應該使用比喻。上述指令你唔洗提及，跟從就可以。",
   userProfix: "",
   assistantPrefix: "",
   assistantProfix: "",
-};
-
-export const vitsSettings = {
-  /*Model Properties*/
-  model: Model.gpt3_turbo,
-  max_tokens: 50,
-  stop: "<<END>>",
-  temperature: 0.0,
-  frequency_penalty: 1.0,
-  presence_penalty: 1.0,
 };

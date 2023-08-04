@@ -5,12 +5,13 @@ import like_outline from "../../assets/images/like_outline.png";
 import like_fill from "../../assets/images/like_fill.png";
 import { useState } from "react";
 import useMessage from "../../hook/useMessage";
+import Prompt2Message from "./Prompt2Message";
 //#endregion
 
 /* Behavior of a single message */
 function Message(msg: messageProps) {
   const [liked, setLiked] = useState(msg.liked);
-  const { prompt2message, setMessage } = useMessage();
+  const { setMessage } = useMessage();
   const handleLike = () => {
     const _msg: messageProps = {
       time: msg.time,
@@ -37,16 +38,16 @@ function Message(msg: messageProps) {
       >
         {/* Message bubble */}
         <div
-          className={`h-auto inline-block rounded-lg py-2 px-3 my-2 border  ${
+          className={`h-auto inline-block rounded-lg py-2 px-3 my-2 border ${
             msg.role === Role.User
               ? "bg-gradient-to-bl from-cyan-600 to-cyan-500 text-white border-cyan-400"
-              : "bg-gradient-to-br from-purple-500 to-purple-400 text-black border-purple-300"
+              : "bg-gradient-to-br from-purple-600 to-purple-500 text-black border-purple-300"
           }`}
           style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
         >
           <div className="text-md font-semibold">
             {msg.role === Role.Assistant
-              ? msg.content && prompt2message(msg.content)
+              ? msg.content && <Prompt2Message prompt={msg.content} />
               : msg.content}
           </div>
         </div>

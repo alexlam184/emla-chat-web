@@ -2,11 +2,11 @@
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import emojiStrip from "emoji-strip";
 import { useState } from "react";
-import useCommon from "../../hook/useCommon";
+import getCommonFunc from "./getCommonFunc";
 import { Base64 } from "js-base64";
 //#endregion
 
-const { outputAdjust } = useCommon();
+const { outputAdjust } = getCommonFunc();
 const setVoiceText = (text: string | undefined) => {
   text = outputAdjust({ content: text }).content;
   if (text) {
@@ -94,7 +94,7 @@ export const useSpeechAI = (handleSTTEnd: () => void) => {
       0.0,
       10.0
     );
-    player.onAudioStart = (s) => {
+    player.onAudioStart = () => {
       player.pause();
     };
     return new Promise<ArrayBuffer>((resolve, reject) => {
@@ -125,10 +125,12 @@ export const useSpeechAI = (handleSTTEnd: () => void) => {
   const STTStart = async () => {
     speechRecognizer = new sdk.SpeechRecognizer(speechConfig);
     speechRecognizer.recognizing = (s, e) => {
+      console.log(s);
       console.log(`RECOGNIZING: Text=${e.result.text}`);
     };
 
     speechRecognizer.recognized = (s, e) => {
+      console.log(s);
       if (e.result.reason == sdk.ResultReason.RecognizedSpeech) {
         console.log(`RECOGNIZED: Text=${e.result.text}`);
         setRecognizedSpeech(e.result.text);
@@ -138,6 +140,7 @@ export const useSpeechAI = (handleSTTEnd: () => void) => {
     };
 
     speechRecognizer.canceled = (s, e) => {
+      console.log(s);
       console.log(`CANCELED: Reason=${e.reason}`);
       if (e.reason == sdk.CancellationReason.Error) {
         console.log(`"CANCELED: ErrorCode=${e.errorCode}`);
@@ -148,15 +151,15 @@ export const useSpeechAI = (handleSTTEnd: () => void) => {
       }
       STTEnd();
     };
-    speechRecognizer.sessionStopped = (s, e) => {
+    speechRecognizer.sessionStopped = () => {
       console.log("\n    Session stopped event.");
       STTEnd();
     };
-    await speechRecognizer.startContinuousRecognitionAsync();
+    speechRecognizer.startContinuousRecognitionAsync();
   };
   const STTEnd = async () => {
     handleSTTEnd();
-    await speechRecognizer.stopContinuousRecognitionAsync();
+    speechRecognizer.stopContinuousRecognitionAsync();
   };
   return {
     TTSCalling,

@@ -4,7 +4,7 @@ import { messageSettings } from "../data/Prompts";
 import { messageProps, promptProps } from "../data/Interface";
 import { Base64 } from "js-base64";
 import axios from "axios";
-import { useDemoPrompt } from "../../hook/useDemoPrompt";
+import { getDemoPrompt } from "./getDemoPrompt";
 //#endregion
 
 const openaiApi = axios.create({
@@ -30,7 +30,7 @@ const getOutput = async (
   frequency_penalty: any,
   presence_penalty: any
 ) => {
-  const demo_value = useDemoPrompt(
+  const demo_value = getDemoPrompt(
     meessages[meessages.length - 1].content as string
   );
   console.log(meessages[meessages.length - 1].content as string);
