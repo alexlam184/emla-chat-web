@@ -27,11 +27,13 @@ interface Live2DFieldProps {
   emotion: string;
   audioData: ArrayBuffer;
 }
-let model: Live2DModel<InternalModel> | null = null;
+
 function Live2DField(props: Live2DFieldProps) {
+  let model: Live2DModel<InternalModel> | null = null;
+
   // register Ticker for Live2DModel
   Live2DModel.registerTicker(Ticker);
-  const cubism4Model = "src\\assets\\model\\未命名\\未命名.model3.json";
+  const cubism4Model = "src/assets/model/live2d_eng/elma01.model3.json";
 
   useEffect(() => {
     const app = new PIXI.Application({
@@ -47,14 +49,39 @@ function Live2DField(props: Live2DFieldProps) {
       model = await Live2DModel.from(cubism4Model);
       app.stage.addChild(model);
 
-      model.scale.set(0.5);
-      model.anchor.set(0.2, 0);
+      const offsetX = 50;
+      const offsetY = 1050;
+      const sizeScale = 3;
+
+      const resizeModel = () => {
+        if (!model) return;
+        const canvasWidth = app.view.width;
+        const canvasHeight = app.view.height;
+        const modelWidth = model.width;
+        const modelHeight = model.height;
+
+        const scaleFactor = Math.min(
+          canvasWidth / modelWidth,
+          canvasHeight / modelHeight
+        );
+
+        model.scale.set(scaleFactor * sizeScale);
+        model.x =
+          (canvasWidth - modelWidth * scaleFactor * sizeScale) / 2 +
+          offsetX * scaleFactor * sizeScale;
+        model.y =
+          (canvasHeight - modelHeight * scaleFactor * sizeScale) / 2 +
+          offsetY * scaleFactor * sizeScale;
+      };
+      resizeModel();
     };
+
     loadModels();
+    //window.addEventListener("resize", loadModels);
     return () => {
-      //model?.destroy();
+      model?.destroy();
     };
-  }, []);
+  }, [model]);
 
   useEffect(() => {
     if (props.audioData.byteLength <= 0) return;
@@ -78,8 +105,6 @@ function Live2DField(props: Live2DFieldProps) {
         playing = false;
       };
     });
-    //};
-    //request.send();
 
     const getByteFrequencyData = () => {
       analyser.getByteFrequencyData(frequencyData);

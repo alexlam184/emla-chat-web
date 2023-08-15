@@ -1,0 +1,247 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "",
+			"Name": "X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "",
+			"Name": "Y"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "",
+			"Name": "Z"
+		},
+		{
+			"Id": "ParamEyeLOpen",
+			"GroupId": "",
+			"Name": "eyeL Open"
+		},
+		{
+			"Id": "ParamEyeLSmile",
+			"GroupId": "",
+			"Name": "eyeL Smile"
+		},
+		{
+			"Id": "ParamEyeROpen",
+			"GroupId": "",
+			"Name": "eyeR Open"
+		},
+		{
+			"Id": "ParamEyeRSmile",
+			"GroupId": "",
+			"Name": "eyeR Smile"
+		},
+		{
+			"Id": "ParamEyeBallX",
+			"GroupId": "",
+			"Name": "eyeballX"
+		},
+		{
+			"Id": "ParamEyeBallY",
+			"GroupId": "",
+			"Name": "eyeballY"
+		},
+		{
+			"Id": "ParamBrowLY",
+			"GroupId": "",
+			"Name": "BrowL Y"
+		},
+		{
+			"Id": "ParamBrowRY",
+			"GroupId": "",
+			"Name": "BrowR Y"
+		},
+		{
+			"Id": "ParamBrowLX",
+			"GroupId": "",
+			"Name": "BrowL X"
+		},
+		{
+			"Id": "ParamBrowRX",
+			"GroupId": "",
+			"Name": "BrowR X"
+		},
+		{
+			"Id": "ParamBrowLAngle",
+			"GroupId": "",
+			"Name": "BrowL Angle"
+		},
+		{
+			"Id": "ParamBrowRAngle",
+			"GroupId": "",
+			"Name": "BrowR Angle"
+		},
+		{
+			"Id": "ParamBrowLForm",
+			"GroupId": "",
+			"Name": "BrowL Form"
+		},
+		{
+			"Id": "ParamBrowRForm",
+			"GroupId": "",
+			"Name": "BrowR Form"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "",
+			"Name": "Mouth Form"
+		},
+		{
+			"Id": "ParamMouthOpenY",
+			"GroupId": "",
+			"Name": "Mouth Open"
+		},
+		{
+			"Id": "ParamCheek",
+			"GroupId": "",
+			"Name": "cheek"
+		},
+		{
+			"Id": "ParamBodyAngleX",
+			"GroupId": "",
+			"Name": "body X"
+		},
+		{
+			"Id": "ParamBodyAngleY",
+			"GroupId": "",
+			"Name": "body Y"
+		},
+		{
+			"Id": "ParamBodyAngleZ",
+			"GroupId": "",
+			"Name": "body Z"
+		},
+		{
+			"Id": "ParamBreath",
+			"GroupId": "",
+			"Name": "breath"
+		},
+		{
+			"Id": "Param7",
+			"GroupId": "",
+			"Name": "hand shake"
+		},
+		{
+			"Id": "ParamHairFront",
+			"GroupId": "",
+			"Name": "front hair"
+		},
+		{
+			"Id": "Param8",
+			"GroupId": "",
+			"Name": "light shake"
+		},
+		{
+			"Id": "Param",
+			"GroupId": "",
+			"Name": "others shake"
+		},
+		{
+			"Id": "ParamHairSide",
+			"GroupId": "",
+			"Name": "side hair"
+		},
+		{
+			"Id": "ParamHairBack",
+			"GroupId": "",
+			"Name": "back hair"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "",
+			"Name": "eye change"
+		},
+		{
+			"Id": "Param4",
+			"GroupId": "",
+			"Name": "keyboard"
+		},
+		{
+			"Id": "Param5",
+			"GroupId": "",
+			"Name": "soldering"
+		},
+		{
+			"Id": "Param3",
+			"GroupId": "",
+			"Name": "turnOff light"
+		},
+		{
+			"Id": "Param6",
+			"GroupId": "",
+			"Name": "handshake On"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": [
+		{
+			"Id": "Part10",
+			"Name": "hand_shake"
+		},
+		{
+			"Id": "Part9",
+			"Name": "turnoff_light"
+		},
+		{
+			"Id": "Part12",
+			"Name": "soldering"
+		},
+		{
+			"Id": "Part11",
+			"Name": "tap_keyboard"
+		},
+		{
+			"Id": "Part2",
+			"Name": "hair"
+		},
+		{
+			"Id": "Part3",
+			"Name": "nose_mouse"
+		},
+		{
+			"Id": "Part4",
+			"Name": "eye"
+		},
+		{
+			"Id": "Part5",
+			"Name": "face"
+		},
+		{
+			"Id": "Part13",
+			"Name": "special"
+		},
+		{
+			"Id": "Part14",
+			"Name": "apparel"
+		},
+		{
+			"Id": "Part16",
+			"Name": "trousers"
+		},
+		{
+			"Id": "Part",
+			"Name": "hands"
+		},
+		{
+			"Id": "Part6",
+			"Name": "legs_feet"
+		},
+		{
+			"Id": "Part8",
+			"Name": "body"
+		},
+		{
+			"Id": "Part21",
+			"Name": "special2"
+		},
+		{
+			"Id": "Part7",
+			"Name": "outwear"
+		}
+	]
+}

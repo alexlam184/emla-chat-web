@@ -27,6 +27,7 @@ const getOutput = async (
   max_tokens: any,
   stop: string,
   temperature: any,
+  top_p: any,
   frequency_penalty: any,
   presence_penalty: any
 ) => {
@@ -60,6 +61,7 @@ const getOutput = async (
       max_tokens: max_tokens,
       stop: stop,
       temperature: temperature,
+      top_p: top_p,
       frequency_penalty: frequency_penalty,
       presence_penalty: presence_penalty,
     };
@@ -71,7 +73,7 @@ const getOutput = async (
       })
       .catch((error) => {
         console.error("An error occurred:", error);
-        output = "" + error;
+        output = "" + error.message;
       });
     return output;
   };
@@ -113,6 +115,7 @@ export const useOpenAI = () => {
       messageSettings.max_tokens,
       messageSettings.stop,
       messageSettings.temperature,
+      messageSettings.top_p,
       messageSettings.frequency_penalty,
       messageSettings.presence_penalty
     );
