@@ -27,11 +27,13 @@ interface Live2DFieldProps {
   emotion: string;
   audioData: ArrayBuffer;
 }
-let model: Live2DModel<InternalModel> | null = null;
+
 function Live2DField(props: Live2DFieldProps) {
+  let model: Live2DModel<InternalModel> | null = null;
+
   // register Ticker for Live2DModel
   Live2DModel.registerTicker(Ticker);
-  const cubism4Model = "src\\assets\\model\\未命名\\未命名.model3.json";
+  const cubism4Model = "src/assets/model/live2d_eng/elma01.model3.json";
 
   useEffect(() => {
     const app = new PIXI.Application({
@@ -71,15 +73,15 @@ function Live2DField(props: Live2DFieldProps) {
           (canvasHeight - modelHeight * scaleFactor * sizeScale) / 2 +
           offsetY * scaleFactor * sizeScale;
       };
-
       resizeModel();
-      window.addEventListener("resize", resizeModel);
     };
+
     loadModels();
+    //window.addEventListener("resize", loadModels);
     return () => {
-      //model?.destroy();
+      model?.destroy();
     };
-  }, []);
+  }, [model]);
 
   useEffect(() => {
     if (props.audioData.byteLength <= 0) return;
