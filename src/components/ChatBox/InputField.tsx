@@ -11,10 +11,11 @@ import {
   usePromptsStore,
 } from "../../store/store";
 import { few_shot_prompts } from "../../global/data/Prompts";
+import { useTranslation } from 'react-i18next';
 //#endregion
 
 interface InputFieldProps {
-  handleUserSubmit: () => Promise<void>;
+  handleUserSubmit: (text?: string) => Promise<void>;
   stopInput: boolean;
   handleSTTStart: () => void;
   handleSTTEnd: () => void;
@@ -70,6 +71,8 @@ function InputField(props: InputFieldProps) {
     ]);
   };
 
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-row w-full h-auto justify-around items-center space-x-3">
       {/* CleanButton */}
@@ -89,7 +92,7 @@ function InputField(props: InputFieldProps) {
       >
         <input
           type="text"
-          placeholder="輸入對話。。。"
+          placeholder={t('Message Elma')}
           className="w-full p-2 rounded-3xl"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

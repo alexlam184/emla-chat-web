@@ -15,6 +15,8 @@ import { Role } from "./global/data/Enum";
 import title from "./assets/images/title.png";
 import MuteSwitch from "./components/MuteSwitch";
 import { useRef } from "react";
+import LanguageSwitch from "./components/LanguageSwitch";
+
 //#endregion
 
 function App() {
@@ -38,7 +40,11 @@ function App() {
   const { pushMessage, messageAdjusting } = useMessage();
   const { prompts, pushPrompt, promptAdjusting } = usePrompt();
 
-  const handleUserSubmit = async () => {
+  const handleUserSubmit = async (text?:string) => {
+
+    //default no variable text input, 
+    //variable text have higher priority to send message
+
     stopInput.current = true;
     console.log(stopInput.current);
     //Save User Input
@@ -54,7 +60,7 @@ function App() {
     //Get OpenAI response
     const output = await openAICalling([
       ...prompts,
-      { role: input.role, content: input.content } as promptProps,
+      { role: input.role, content: text ?? input.content } as promptProps,
     ]);
 
     //Get audioData from TTS
@@ -102,10 +108,13 @@ function App() {
           id="elmaContainer"
           className="flex flex-col sm:w-[45%] sm:visible invisible items-start"
         >
-          <div className="scale-75 absolute">
+          <div className="scale-75 absolute ">
             <img src={title} alt="title" className="scale-75 -z-30"></img>
+            <div className="flex flex-row">
             <div className="flex flex-col w-full items-center">
               <MuteSwitch />
+              <LanguageSwitch handleUserSubmit={handleUserSubmit} />
+            </div>
             </div>
           </div>
           <div className="flex flex-row w-full h-full items-start">
