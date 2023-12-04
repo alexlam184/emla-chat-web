@@ -48,12 +48,25 @@ function App() {
     stopInput.current = true;
     console.log(stopInput.current);
     //Save User Input
-    const input: messageProps = {
+    // const input: messageProps = {
+    //   time: Date.now(),
+    //   role: Role.User,
+    //   content: message,
+    //   liked: false,
+    // };
+
+    const input: messageProps = (text?{
+      time: Date.now(),
+      role: Role.User,
+      content: text,
+      liked: false,
+    }:{
       time: Date.now(),
       role: Role.User,
       content: message,
       liked: false,
-    };
+    })
+
     pushMessage([input]);
     pushPrompt([input]);
 

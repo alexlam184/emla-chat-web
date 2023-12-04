@@ -46,6 +46,7 @@ function IconButton(props: IconButtonProps) {
 /* Input field of user's messages */
 function InputField(props: InputFieldProps) {
   const { message, setMessage } = useInputMessageStore();
+  const {  i18n } = useTranslation();
 
   useEffect(() => {
     if (props.speaking) {
@@ -61,11 +62,16 @@ function InputField(props: InputFieldProps) {
   const { setMessages } = useMessagesStore();
   const { setPrompts } = usePromptsStore();
   const handleClear = () => {
+
+    console.log("alex locale=",i18n.resolvedLanguage);
+
+    
     setMessages([]);
     setPrompts([
       {
         role: Role.System,
         content: import.meta.env.VITE_SYSTEM_CONTENT,
+        // content: i18n.resolvedLanguage === "en" ? import.meta.env.VITE_SYSTEM_CONTENT_ENG :import.meta.env.VITE_SYSTEM_CONTENT,
       },
       ...few_shot_prompts,
     ]);

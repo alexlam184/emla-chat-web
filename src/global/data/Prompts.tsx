@@ -51,7 +51,11 @@ export const messageSettings = {
 
   /*Prompt Properties*/
   userPrefix:
-    "請使用繁體廣東話同大量使用emoji。當我要求你講解專業知識，你必須使用日常生活比喻協助解釋，其他情況你唔應該使用比喻。上述指令你唔洗提及，跟從就可以。",
+    // "請使用繁體廣東話同大量使用emoji。當我要求你講解專業知識，你必須使用日常生活比喻協助解釋，其他情況你唔應該使用比喻。上述指令你唔洗提及，跟從就可以。",
+    "請使用繁體廣東話同大量使用emoji。上述指令你唔洗提及，跟從就可以。",
+  userPrefix_eng:
+    "Please use english and emoji",
+
   userProfix: "",
   assistantPrefix: "",
   assistantProfix: "",

@@ -5,6 +5,7 @@ import { messageProps, promptProps } from "../data/Interface";
 import { Base64 } from "js-base64";
 import axios from "axios";
 import { getDemoPrompt } from "./getDemoPrompt";
+import { useTranslation } from "react-i18next";
 //#endregion
 
 const openaiApi = axios.create({
@@ -81,7 +82,12 @@ const getOutput = async (
 };
 
 export const useOpenAI = () => {
+  const {  i18n } = useTranslation();
   const openAICalling = async (prompts: Array<promptProps>) => {
+
+    const targetUserPrefix = i18n.resolvedLanguage === "en" ? messageSettings.userPrefix_eng :messageSettings.userPrefix
+
+
     console.log("openAI CALLING...");
     const prompts_api: Array<promptProps> = prompts.map(
       (prompt: promptProps) => {
@@ -89,7 +95,7 @@ export const useOpenAI = () => {
           role: prompt.role,
           content:
             prompt.role === Role.User
-              ? messageSettings.userPrefix +
+              ? targetUserPrefix +
                 prompt.content +
                 messageSettings.userProfix
               : messageSettings.assistantPrefix +
@@ -100,7 +106,7 @@ export const useOpenAI = () => {
     );
     /* prompts_api[i].content =
         prompts_api[i].role === Role.User
-        ? messageSettings.userPrefix +
+        ? targetUserPrefix +
           prompts_api[i].content +
           messageSettings.userProfix
         : messageSettings.assistantPrefix +

@@ -1,17 +1,16 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next';
+import { locales } from '../global/data/constant';
 
-import {
-    useInputMessageStore,
-  } from "../store/store";
 
-const locales = {
-    hk: { title: '繁體中文' },
-    en: { title: 'English' },
-  };
-  
+
+
+/**
+ * temporary solve locale change but press clear chat history cause language back to chinese
+ */
+
 export default function LanguageSwitch({handleUserSubmit}:{handleUserSubmit: (text?: string) => Promise<void>}) {
-    const { t, i18n } = useTranslation();
+    const {  i18n } = useTranslation();
 
 
 
