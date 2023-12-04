@@ -1,8 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next';
-import { locales } from '../global/data/constant';
+// import { locales } from '../global/data/constant'; // error occur
 
-
+const locales = {
+    hk: { title: '繁體中文' },
+    en: { title: 'English' },
+  };
 
 
 /**
