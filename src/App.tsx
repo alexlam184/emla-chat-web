@@ -16,6 +16,8 @@ import title from "./assets/images/title.png";
 import MuteSwitch from "./components/MuteSwitch";
 import { useRef } from "react";
 import LanguageSwitch from "./components/LanguageSwitch";
+import TabsSwitch from "./components/common/TabsSwitch";
+import Tab from "./components/common/Tab";
 
 //#endregion
 
@@ -40,9 +42,8 @@ function App() {
   const { pushMessage, messageAdjusting } = useMessage();
   const { prompts, pushPrompt, promptAdjusting } = usePrompt();
 
-  const handleUserSubmit = async (text?:string) => {
-
-    //default no variable text input, 
+  const handleUserSubmit = async (text?: string) => {
+    //default no variable text input,
     //variable text have higher priority to send message
 
     stopInput.current = true;
@@ -55,17 +56,19 @@ function App() {
     //   liked: false,
     // };
 
-    const input: messageProps = (text?{
-      time: Date.now(),
-      role: Role.User,
-      content: text,
-      liked: false,
-    }:{
-      time: Date.now(),
-      role: Role.User,
-      content: message,
-      liked: false,
-    })
+    const input: messageProps = text
+      ? {
+          time: Date.now(),
+          role: Role.User,
+          content: text,
+          liked: false,
+        }
+      : {
+          time: Date.now(),
+          role: Role.User,
+          content: message,
+          liked: false,
+        };
 
     pushMessage([input]);
     pushPrompt([input]);
@@ -119,33 +122,72 @@ function App() {
         {/*Live2D Model Container*/}
         <div
           id="elmaContainer"
-          className="flex flex-col sm:w-[45%] sm:visible invisible items-start"
+          className="flex flex-col sm:w-[30%] sm:visible invisible items-start"
         >
           <div className="scale-75 absolute ">
             <img src={title} alt="title" className="scale-75 -z-30"></img>
             <div className="flex flex-row">
-            <div className="flex flex-col w-full items-center">
-              <MuteSwitch />
-              <LanguageSwitch handleUserSubmit={handleUserSubmit} />
-            </div>
+              <div className="flex flex-col w-full items-center">
+                <MuteSwitch />
+                <LanguageSwitch handleUserSubmit={handleUserSubmit} />
+              </div>
             </div>
           </div>
           <div className="flex flex-row w-full h-full items-start">
             <Live2DField emotion={emotion} audioData={audioData} />
           </div>
         </div>
-        {/*Chat Box*/}
-        <div className="flex flex-col w-full sm:w-[55%] p-1 items-center justify-center z-10">
-          <Upperfield />
-          <MessagesArea loading={stopInput.current} speaking={speaking} />
-          <InputField
-            handleUserSubmit={handleUserSubmit}
-            stopInput={stopInput.current}
-            handleSTTStart={handleSTTStart}
-            handleSTTEnd={handleSTTEnd}
-            speaking={speaking}
-            recognizedSpeech={recognizedSpeech}
-          />
+
+        <div className="flex flex-col w-full sm:w-[80%] p-1 items-center justify-center z-10">
+          <TabsSwitch>
+            {/*Chat Box*/}
+            <Tab name="chatbox 文字對答">
+              <div className="w-full h-full grid grid-cols-1  grid-rows-6 gap-4">
+                <Upperfield />
+                <div className="row-span-5">
+                  <MessagesArea
+                    loading={stopInput.current}
+                    speaking={speaking}
+                  />
+                </div>
+                <div className="row-start-8">
+                  <InputField
+                    handleUserSubmit={handleUserSubmit}
+                    stopInput={stopInput.current}
+                    handleSTTStart={handleSTTStart}
+                    handleSTTEnd={handleSTTEnd}
+                    speaking={speaking}
+                    recognizedSpeech={recognizedSpeech}
+                  />
+                </div>
+              </div>
+            </Tab>
+            {/*Image Generate Box*/}
+            <Tab name="Image generator 圖像生成">
+              <div className="w-full h-full grid grid-cols-1  grid-rows-6 gap-4">
+                <Upperfield />
+                <div className="row-start-2">
+                  <InputField
+                    handleUserSubmit={handleUserSubmit}
+                    stopInput={stopInput.current}
+                    handleSTTStart={handleSTTStart}
+                    handleSTTEnd={handleSTTEnd}
+                    speaking={speaking}
+                    recognizedSpeech={recognizedSpeech}
+                  />
+                </div>
+                <div className="row-span-5 grid grid-cols-2  rounded-lg mx-4 mb-4">
+                  <div className="grid grid-cols-2  grid-rows-2 gap-2">
+                    <img className="w-full h-[300px] bg-gray-700" src=""></img>
+                    <img className="w-full h-[300px] bg-gray-700" src=""></img>
+                    <img className="w-full h-[300px] bg-gray-700" src=""></img>
+                    <img className="w-full h-[300px] bg-gray-700" src=""></img>
+                  </div>
+                  <div className=" bg-amber-500"></div>
+                </div>
+              </div>
+            </Tab>
+          </TabsSwitch>
         </div>
       </div>
     </>

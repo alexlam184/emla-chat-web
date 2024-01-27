@@ -11,7 +11,7 @@ import {
   usePromptsStore,
 } from "../../store/store";
 import { few_shot_prompts } from "../../global/data/Prompts";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 //#endregion
 
 interface InputFieldProps {
@@ -46,7 +46,7 @@ function IconButton(props: IconButtonProps) {
 /* Input field of user's messages */
 function InputField(props: InputFieldProps) {
   const { message, setMessage } = useInputMessageStore();
-  const {  i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     if (props.speaking) {
@@ -62,10 +62,8 @@ function InputField(props: InputFieldProps) {
   const { setMessages } = useMessagesStore();
   const { setPrompts } = usePromptsStore();
   const handleClear = () => {
+    console.log("alex locale=", i18n.resolvedLanguage);
 
-    console.log("alex locale=",i18n.resolvedLanguage);
-
-    
     setMessages([]);
     setPrompts([
       {
@@ -80,7 +78,7 @@ function InputField(props: InputFieldProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-row w-full h-auto justify-around items-center space-x-3">
+    <div className="flex flex-row w-full h-full justify-around items-center space-x-3">
       {/* CleanButton */}
       <IconButton
         onClick={handleClear}
@@ -98,7 +96,7 @@ function InputField(props: InputFieldProps) {
       >
         <input
           type="text"
-          placeholder={t('Message Elma')}
+          placeholder={t("Message Elma")}
           className="w-full p-2 rounded-3xl"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
