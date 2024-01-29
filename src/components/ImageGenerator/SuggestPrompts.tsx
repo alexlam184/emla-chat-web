@@ -1,7 +1,6 @@
 import React from "react";
 import { SuggestPromptsType } from "../../global/data/Interface";
 import { useInputMessageStore } from "../../store/store";
-import { suggestPrompts } from "../../global/data/constant";
 
 const ButtonGroup = ({ category, prompts, onButtonClick }) => {
   return (
@@ -22,6 +21,43 @@ const ButtonGroup = ({ category, prompts, onButtonClick }) => {
 
 const SuggestPrompts = () => {
   const { message, setMessage } = useInputMessageStore();
+
+  const suggestPrompts = {
+    lighting: [
+      "soft light",
+      "hard light",
+      "dramatic lighting",
+      "ambient lights",
+      "ring light",
+      "neon light",
+      "morning",
+      "sunset",
+    ],
+    environment: ["indoor", "outdoor", "underwater", "in space"],
+    colorScheme: ["vibrant", "dark", "pastel"],
+    view: ["front", "overhead", "side"],
+    photography: [
+      "using Nikon camera",
+      "using Fujifilm camera",
+      "using Canon camera",
+    ],
+    painting: ["oil painting", "watercolor", "impressionism"],
+    illustration: ["pencil drawing", "Charcoal sketch", "cartoon", "poster"],
+    art: [
+      "old film still",
+      "lo-fi",
+      "nostalgic",
+      "Sculpture",
+      "Collage",
+      "Street art",
+      "Textile art",
+      "Installation art",
+      "Ceramic art",
+      "Lithography",
+    ],
+    realism: ["4K", "8K"],
+  };
+
   const handleButtonClick = (prompt) => {
     console.log(`Button clicked: ${prompt}`);
     //check the last character of a string to see if it is a comma (,)

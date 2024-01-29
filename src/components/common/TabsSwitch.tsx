@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from "react";
 import { Children } from "react";
-import { bots } from "../../global/data/constant";
 import { RadioButton } from "./RadioButton";
 import { useModelStore } from "../../store/store";
 import { Model } from "../../global/data/Enum";
