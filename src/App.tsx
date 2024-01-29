@@ -23,7 +23,7 @@ import LanguageSwitch from "./components/LanguageSwitch";
 import TabsSwitch from "./components/common/TabsSwitch";
 import Tab from "./components/common/Tab";
 import SuggestPrompts from "./components/ImageGenerator/SuggestPrompts";
-import { suggestPrompts } from "../src/global/data/constant";
+
 import OpenAI from "openai";
 import { Base64 } from "js-base64";
 import LoadingMessage from "./components/ChatBox/LoadingMessage";
@@ -234,7 +234,7 @@ function App() {
                   </div>
                   <div className="border-indigo-600 border-4 overflow-y-auto">
                     <SpecialPrompts />
-                    <SuggestPrompts suggestPrompts={suggestPrompts} />
+                    <SuggestPrompts />
                   </div>
                 </div>
               </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { SuggestPromptsType } from "../../global/data/Interface";
 import { useInputMessageStore } from "../../store/store";
+import { suggestPrompts } from "../../global/data/constant";
 
 const ButtonGroup = ({ category, prompts, onButtonClick }) => {
   return (
@@ -19,11 +20,7 @@ const ButtonGroup = ({ category, prompts, onButtonClick }) => {
   );
 };
 
-const SuggestPrompts = ({
-  suggestPrompts,
-}: {
-  suggestPrompts: SuggestPromptsType;
-}) => {
+const SuggestPrompts = () => {
   const { message, setMessage } = useInputMessageStore();
   const handleButtonClick = (prompt) => {
     console.log(`Button clicked: ${prompt}`);
