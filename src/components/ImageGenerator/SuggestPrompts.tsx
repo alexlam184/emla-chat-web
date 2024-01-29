@@ -1,5 +1,4 @@
 import React from "react";
-import { SuggestPromptsType } from "../../global/data/Interface";
 import { useInputMessageStore } from "../../store/store";
 
 const ButtonGroup = ({ category, prompts, onButtonClick }) => {
