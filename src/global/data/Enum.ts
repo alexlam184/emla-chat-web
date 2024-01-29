@@ -11,4 +11,5 @@ export enum Model {
   davinci_003 = "text-davinci-003",
   gpt4 = "gpt-4",
   gpt4_32k = "gpt-4-32k",
+  dalle_3 = "dall-e-3",
 }

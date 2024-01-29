@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { messageProps, promptProps } from "../global/data/Interface";
-import { Role } from "../global/data/Enum";
+import { Model, Role } from "../global/data/Enum";
 import { few_shot_prompts } from "../global/data/Prompts";
 
 interface MutedState {
@@ -18,6 +18,25 @@ export const useMutedStore = create<MutedState>()(
       }),
       {
         name: "muted-storage",
+      }
+    )
+  )
+);
+
+interface ModelState {
+  model: Model.gpt3_turbo_16k | Model.dalle_3;
+  setModel: (model: Model.gpt3_turbo_16k | Model.dalle_3) => void;
+}
+
+export const useModelStore = create<ModelState>()(
+  devtools(
+    persist(
+      (set) => ({
+        model: Model.gpt3_turbo_16k,
+        setModel: (state) => set({ model: state }),
+      }),
+      {
+        name: "model-storage",
       }
     )
   )
@@ -82,6 +101,24 @@ export const usePromptsStore = create<PromptsState>()(
       }),
       {
         name: "prompts-storage",
+      }
+    )
+  )
+);
+
+interface ImageOutputMesssageState {
+  imageMessage: string;
+  setImageMessage: (imageMessage: string) => void;
+}
+export const useImageOutputMessageStore = create<ImageOutputMesssageState>()(
+  devtools(
+    persist(
+      (set) => ({
+        imageMessage: "",
+        setImageMessage: (state) => set({ imageMessage: state }),
+      }),
+      {
+        name: "image-message-storage",
       }
     )
   )

@@ -1,6 +1,6 @@
 //#region Dependency
 import { useEffect } from "react";
-import { Role } from "../../global/data/Enum";
+import { Model, Role } from "../../global/data/Enum";
 import icon_mute from "../../assets/images/icon_mute.png";
 import icon_unmute from "../../assets/images/icon_unmute.png";
 import icon_clean from "../../assets/images/icon_clean.png";
@@ -15,7 +15,8 @@ import { useTranslation } from "react-i18next";
 //#endregion
 
 interface InputFieldProps {
-  handleUserSubmit: (text?: string) => Promise<void>;
+  model?: Model;
+  handleUserSubmit: (text?: string, model?: Model) => Promise<void>;
   stopInput: boolean;
   handleSTTStart: () => void;
   handleSTTEnd: () => void;
@@ -55,7 +56,7 @@ function InputField(props: InputFieldProps) {
   });
 
   const handleSend = () => {
-    props.handleUserSubmit();
+    props.handleUserSubmit(undefined, props.model);
     setMessage("");
   };
 

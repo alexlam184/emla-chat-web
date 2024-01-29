@@ -1,8 +1,12 @@
+import { useTranslation } from "react-i18next";
+
 export const RadioButton = ({ type, id, name, label, checked, onChange }) => {
+  const { t } = useTranslation();
+
   return (
     <label
       htmlFor={id}
-      className={`flex bg-gray-100 text-gray-700 rounded-md p-6 my-3  hover:bg-indigo-300 cursor-pointer  ${
+      className={`flex justify-center items-center bg-gray-100 text-gray-700 rounded-md p-4 m-3  hover:bg-indigo-300 cursor-pointer  ${
         checked ? "bg-indigo-600" : "bg-white"
       }`}
     >
@@ -17,12 +21,13 @@ export const RadioButton = ({ type, id, name, label, checked, onChange }) => {
         checked={checked}
         onChange={onChange}
       />
+
       <span
-        className={`group text-lg font-medium hover:text-white ${
+        className={`group line-clamp-3 text-md w-16 font-medium hover:text-white ${
           checked ? "text-white" : "text-indigo-600"
         }`}
       >
-        {label}
+        {t(label)}
       </span>
     </label>
   );

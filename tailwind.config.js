@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         themeturnede: "#00df9a",
+        whiteTransparent: "#ffffffb3",
       },
       fontFamily: {},
     },
