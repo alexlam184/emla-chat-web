@@ -1,17 +1,18 @@
-import React from "react";
 import { useInputMessageStore } from "../../store/store";
 
 const ButtonGroup = ({ category, prompts, onButtonClick }) => {
   return (
     <div>
-      <h3 className="text-2xl text-white">{category}</h3>
+      <h3 className="text-2xl text-white font-bold my-4">
+        {category.charAt(0).toUpperCase() + category.slice(1)}
+      </h3>
       {prompts.map((prompt, index) => (
         <button
-          className="rounded-3xl  p-2 bg-white border-indigo-600 border-2 text-indigo-600 text-center hover:bg-indigo-300 hover:text-white"
+          className="rounded-lg p-2 m-1 bg-white border-indigo-600 border-2 font-bold text-indigo-600 text-center hover:bg-indigo-300 hover:text-white"
           key={index}
           onClick={() => onButtonClick(prompt)}
         >
-          {prompt}
+          {prompt.toUpperCase()}
         </button>
       ))}
     </div>

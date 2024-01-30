@@ -23,7 +23,7 @@ export const RadioButton = ({ type, id, name, label, checked, onChange }) => {
       />
 
       <span
-        className={`group line-clamp-3 text-md w-16 font-medium hover:text-white ${
+        className={`group line-clamp-3 w-20 text-md text-center font-medium hover:text-white ${
           checked ? "text-white" : "text-indigo-600"
         }`}
       >

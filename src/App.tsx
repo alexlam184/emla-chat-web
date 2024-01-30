@@ -175,7 +175,7 @@ function App() {
           <TabsSwitch>
             {/*Chat Box*/}
             <Tab name="chatbot">
-              <div className="w-full h-full grid grid-cols-1  grid-rows-6 gap-4">
+              <div className="w-full h-full grid grid-cols-1 grid-rows-6 gap-4">
                 <Upperfield />
                 <div className="row-span-5">
                   <MessagesArea
@@ -197,7 +197,7 @@ function App() {
             </Tab>
             {/*Image Generate Box*/}
             <Tab name="imageGenerator">
-              <div className="w-full h-full grid grid-cols-1  grid-rows-6 gap-4">
+              <div className="w-full h-full grid grid-cols-1 grid-rows-6 gap-4">
                 <Upperfield />
                 <div className="row-start-2">
                   <InputField
@@ -211,14 +211,14 @@ function App() {
                   />
                 </div>
 
-                <div className="row-span-4 grid grid-cols-2  rounded-lg mx-4 mb-4">
+                <div className="row-span-4 grid grid-cols-2 rounded-lg mx-4 mb-4 gap-2">
                   <div className="relative w-full h-full">
                     {loading && (
                       <div className="absolute w-full h-full bg-whiteTransparent flex justify-center items-center">
                         <LoadingMessage loadingMsg="Elma is thinking。。。" />
                       </div>
                     )}
-                    <div className="text-white">
+                    <div className="text-white text-2xl font-bold">
                       <div>
                         <span>Prompt:</span>
                       </div>
@@ -227,12 +227,24 @@ function App() {
                         value={targetImagePrompt}
                       ></textarea>
                     </div>
-                    <img
-                      className="aspect-square bg-gray-700"
-                      src={imageMessage}
-                    ></img>
+                    <div className="absolute right-6 w-[600px] flex justify-center">
+                      <img
+                        src="src\assets\images\monitor.png"
+                        alt="Monitor"
+                        className="absolute z-99 w-full h-[600px] -top-20 left-8"
+                      />
+                      <img
+                        className="bg-gray-700 w-[520px] h-[280px] absolute top-[43px] left-[71px] rounded-xl z-0"
+                        src={
+                          imageMessage
+                            ? imageMessage
+                            : "src/assets/images/demo.png"
+                        }
+                        alt="No images generated"
+                      />
+                    </div>
                   </div>
-                  <div className="border-indigo-600 border-4 overflow-y-auto">
+                  <div className="border-indigo-600 border-4 overflow-y-auto px-2">
                     <SpecialPrompts />
                     <SuggestPrompts />
                   </div>
