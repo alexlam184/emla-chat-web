@@ -8,11 +8,11 @@ const ButtonGroup = ({ category, prompts, onButtonClick }) => {
       </h3>
       {prompts.map((prompt, index) => (
         <button
-          className="rounded-lg p-2 m-1 bg-white border-indigo-600 border-2 font-bold text-indigo-600 text-center hover:bg-indigo-300 hover:text-white"
+          className="rounded-lg p-2 m-2 bg-indigo-500 border-indigo-500 border-2 font-bold text-white text-center hover:bg-indigo-300 hover:text-white"
           key={index}
           onClick={() => onButtonClick(prompt)}
         >
-          {prompt.toUpperCase()}
+          {prompt.charAt(0).toUpperCase() + prompt.slice(1)}
         </button>
       ))}
     </div>
