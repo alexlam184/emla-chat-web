@@ -51,7 +51,7 @@ export default function FourPanelComicPrompt() {
         <button
           type="button"
           onClick={openModel}
-          className="rounded-md bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-white hover:text-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+          className="rounded-md bg-lime-500 px-4 py-2 text-sm font-medium text-white hover:bg-white hover:text-lime-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           Four panel comic
         </button>
