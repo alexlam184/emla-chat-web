@@ -54,6 +54,7 @@ function App() {
   const { imageMessage, setImageMessage } = useImageOutputMessageStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [targetImagePrompt, setTargetImagePrompt] = useState<string>("");
+  const [currentIndex, setIndex] = useState(prompts.length-1);
 
   const openai = new OpenAI({
     apiKey: Base64.decode(import.meta.env.VITE_OPENAI_API_KEY),
@@ -82,7 +83,16 @@ function App() {
         });
         const image_url = response.data[0].url ?? "no response";
         console.log("alex url=", image_url);
+        const msg: messageProps = {
+          time: Date.now(),
+          role: Role.User,
+          content: image_url,
+          liked: false,
+        }
         setImageMessage(image_url);
+        pushMessage([msg]);
+        pushPrompt([msg]);
+
       } else {
         console.log("call chatGPT...");
         const input: messageProps = text
@@ -140,6 +150,36 @@ function App() {
   const handleSTTEnd = () => {
     STTEnd();
   };
+
+  const displayPrevImage = () => {
+    let index = currentIndex - 1;
+    console.log(prompts)
+    while (index >= 0){
+      if(prompts[index].content?.includes("https://oaidalleapiprodscus")){
+        console.log(prompts[index].content)
+        // setImageMessage(prompts[index].content)
+        setIndex(index);
+        return;
+      }
+      index--;
+    }
+    return;
+  }
+
+  const displayNextImage = () => {
+    let index = currentIndex + 1;
+    while (index < prompts.length){
+      if(prompts[index].content?.includes("https://oaidalleapiprodscus")){
+        console.log(prompts[index].content)
+        // setImageMessage(prompts[index].content);
+        setIndex(index);
+        return;
+      }
+      index++;
+    }
+    return;
+  }
+
   return (
     <>
       {/* Background  */}
@@ -213,7 +253,7 @@ function App() {
 
                 <div className="row-span-4 grid grid-cols-2 rounded-lg mx-4 mb-4 gap-2">
                   {/* Area for displaying generated images */}
-                  <div className="relative w-full h-full">
+                  <div className="relative w-full h-full -top-10">
                     <div className="text-white text-2xl font-bold -ml-[180px] mr-4">
                       <div className="mb-2">
                         <span>Prompt:</span>
@@ -231,7 +271,7 @@ function App() {
                         className="absolute z-0 w-full h-[635px] -top-20 left-7"
                       />
                       {loading ? (
-                        <div className="bg-whiteTransparent w-[525px] h-[300px] absolute top-[43px] left-[73px] rounded-xl z-99 flex justify-center items-center">
+                        <div className="bg-whiteTransparent w-[525px] h-[300px] absolute top-[45px] left-[65px] rounded-xl z-99 flex justify-center items-center">
                           <LoadingMessage loadingMsg="Elma is thinking。。。" />
                         </div>
                       ) : (
@@ -241,6 +281,10 @@ function App() {
                           alt="No images generated"
                         />
                       )}
+                    </div>
+                    <div className="relative -left-14">
+                      <button className="text-white rounded-xl bg-indigo-400 w-32 mr-4" onClick={displayPrevImage}>Previous Image</button>
+                      <button className="text-white rounded-xl bg-indigo-400 w-32" onClick={displayNextImage}>Next Image</button>
                     </div>
                   </div>
 
