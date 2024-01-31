@@ -78,7 +78,7 @@ function App() {
           model: "dall-e-3",
           prompt: targetPrompt,
           n: 1,
-          size: "1024x1024",
+          size: "1792x1024",
         });
         const image_url = response.data[0].url ?? "no response";
         console.log("alex url=", image_url);
@@ -223,25 +223,21 @@ function App() {
                         value={targetImagePrompt}
                       ></textarea>
                     </div>
-                    
+
                     <div className="absolute right-6 w-[600px] flex justify-center">
                       <img
-                        src="src\assets\images\monitor.png"
+                        src="monitor.png"
                         alt="Monitor"
-                        className="absolute z-0 w-full h-[600px] -top-20 left-8"
+                        className="absolute z-0 w-full h-[635px] -top-20 left-7"
                       />
                       {loading ? (
-                        <div className="bg-whiteTransparent w-[520px] h-[280px] absolute top-[43px] left-[73px] rounded-xl z-99 flex justify-center items-center">
+                        <div className="bg-whiteTransparent w-[525px] h-[300px] absolute top-[43px] left-[73px] rounded-xl z-99 flex justify-center items-center">
                           <LoadingMessage loadingMsg="Elma is thinking。。。" />
                         </div>
                       ) : (
                         <img
-                          className="bg-gray-700 w-[520px] h-[280px] absolute top-[43px] left-[73px] rounded-xl z-1"
-                          src={
-                            imageMessage
-                              ? imageMessage
-                              : "src/assets/images/demo.png"
-                          }
+                          className="bg-gray-700 w-[525px] h-[300px] absolute top-[45px] left-[65px] rounded-xl z-1"
+                          src={imageMessage}
                           alt="No images generated"
                         />
                       )}
