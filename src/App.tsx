@@ -199,7 +199,7 @@ function App() {
             <Tab name="imageGenerator">
               <div className="w-full h-full grid grid-cols-1 grid-rows-6 gap-4">
                 <Upperfield />
-                <div className="row-start-2">
+                <div className="-ml-48">
                   <InputField
                     model={Model.dalle_3}
                     handleUserSubmit={handleUserSubmit}
@@ -212,25 +212,26 @@ function App() {
                 </div>
 
                 <div className="row-span-4 grid grid-cols-2 rounded-lg mx-4 mb-4 gap-2">
+                  {/* Area for displaying generated images */}
                   <div className="relative w-full h-full">
-                    <div className="text-white text-2xl font-bold -ml-[200px] mr-4">
+                    <div className="text-white text-2xl font-bold -ml-[180px] mr-4">
                       <div className="mb-2">
                         <span>Prompt:</span>
                       </div>
                       <textarea
-                        className="text-black w-full resize-none"
+                        className="text-black w-full rounded-xl resize-none"
                         value={targetImagePrompt}
                       ></textarea>
                     </div>
-                    {/* Area for displaying generated images */}
+                    
                     <div className="absolute right-6 w-[600px] flex justify-center">
                       <img
-                        src="src/assets/images/monitor.png"
+                        src="src\assets\images\monitor.png"
                         alt="Monitor"
                         className="absolute z-0 w-full h-[600px] -top-20 left-8"
                       />
                       {loading ? (
-                        <div className="bg-whiteTransparent w-[520px] h-[280px] absolute top-[43px] left-[71px] rounded-xl z-99 flex justify-center items-center">
+                        <div className="bg-whiteTransparent w-[520px] h-[280px] absolute top-[43px] left-[73px] rounded-xl z-99 flex justify-center items-center">
                           <LoadingMessage loadingMsg="Elma is thinking。。。" />
                         </div>
                       ) : (
@@ -246,6 +247,7 @@ function App() {
                       )}
                     </div>
                   </div>
+
                   <div className="border-indigo-600 border-4 overflow-y-auto px-2">
                     <SpecialPrompts />
                     <SuggestPrompts />

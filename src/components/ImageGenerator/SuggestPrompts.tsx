@@ -61,7 +61,7 @@ const SuggestPrompts = () => {
   const handleButtonClick = (prompt) => {
     console.log(`Button clicked: ${prompt}`);
     //check the last character of a string to see if it is a comma (,)
-    if (message.charAt(message.length - 1) === ",") {
+    if (message.charAt(message.length - 1) === "," || message === "") {
       setMessage(message + prompt + ",");
     } else {
       setMessage(message + "," + prompt + ",");

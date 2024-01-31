@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import { useState } from "react";
 import { Children } from "react";
 import { RadioButton } from "./RadioButton";
 import { useModelStore } from "../../store/store";
@@ -23,7 +23,7 @@ const TabsSwitch = ({ children }) => {
     <div className="flex flex-row w-full h-full">
       <ul aria-label="Tab switch" className="">
         {Children.map(children, (child, index) => (
-          <li className="">
+          <li className="-ml-10">
             <RadioButton
               type="radio"
               key={index}
