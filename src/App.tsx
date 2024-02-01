@@ -157,7 +157,7 @@ function App() {
     while (index >= 0){
       if(prompts[index].content?.includes("https://oaidalleapiprodscus")){
         console.log(prompts[index].content)
-        // setImageMessage(prompts[index].content)
+        setImageMessage(prompts[index].content!)
         setIndex(index);
         return;
       }
@@ -171,7 +171,7 @@ function App() {
     while (index < prompts.length){
       if(prompts[index].content?.includes("https://oaidalleapiprodscus")){
         console.log(prompts[index].content)
-        // setImageMessage(prompts[index].content);
+        setImageMessage(prompts[index].content!)
         setIndex(index);
         return;
       }
