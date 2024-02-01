@@ -54,7 +54,7 @@ function App() {
   const { imageMessage, setImageMessage } = useImageOutputMessageStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [targetImagePrompt, setTargetImagePrompt] = useState<string>("");
-  const [currentIndex, setIndex] = useState(prompts.length-1);
+  const [currentIndex, setIndex] = useState(prompts.length - 1);
 
   const openai = new OpenAI({
     apiKey: Base64.decode(import.meta.env.VITE_OPENAI_API_KEY),
@@ -88,11 +88,10 @@ function App() {
           role: Role.User,
           content: image_url,
           liked: false,
-        }
+        };
         setImageMessage(image_url);
         pushMessage([msg]);
         pushPrompt([msg]);
-
       } else {
         console.log("call chatGPT...");
         const input: messageProps = text
@@ -153,32 +152,32 @@ function App() {
 
   const displayPrevImage = () => {
     let index = currentIndex - 1;
-    console.log(prompts)
-    while (index >= 0){
-      if(prompts[index].content?.includes("https://oaidalleapiprodscus")){
-        console.log(prompts[index].content)
-        setImageMessage(prompts[index].content!)
+    console.log(prompts);
+    while (index >= 0) {
+      if (prompts[index].content?.includes("https://oaidalleapiprodscus")) {
+        console.log(prompts[index].content);
+        setImageMessage(prompts[index].content!);
         setIndex(index);
         return;
       }
       index--;
     }
     return;
-  }
+  };
 
   const displayNextImage = () => {
     let index = currentIndex + 1;
-    while (index < prompts.length){
-      if(prompts[index].content?.includes("https://oaidalleapiprodscus")){
-        console.log(prompts[index].content)
-        setImageMessage(prompts[index].content!)
+    while (index < prompts.length) {
+      if (prompts[index].content?.includes("https://oaidalleapiprodscus")) {
+        console.log(prompts[index].content);
+        setImageMessage(prompts[index].content!);
         setIndex(index);
         return;
       }
       index++;
     }
     return;
-  }
+  };
 
   return (
     <>
@@ -283,8 +282,18 @@ function App() {
                       )}
                     </div>
                     <div className="relative -left-14">
-                      <button className="text-white rounded-xl bg-indigo-400 w-32 mr-4" onClick={displayPrevImage}>Previous Image</button>
-                      <button className="text-white rounded-xl bg-indigo-400 w-32" onClick={displayNextImage}>Next Image</button>
+                      <button
+                        className="text-white rounded-xl bg-indigo-400 w-32 mr-4"
+                        onClick={displayPrevImage}
+                      >
+                        Previous Image
+                      </button>
+                      <button
+                        className="text-white rounded-xl bg-indigo-400 w-32"
+                        onClick={displayNextImage}
+                      >
+                        Next Image
+                      </button>
                     </div>
                   </div>
 
