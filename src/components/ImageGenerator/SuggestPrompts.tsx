@@ -1,17 +1,18 @@
-import React from "react";
 import { useInputMessageStore } from "../../store/store";
 
 const ButtonGroup = ({ category, prompts, onButtonClick }) => {
   return (
     <div>
-      <h3 className="text-2xl text-white">{category}</h3>
+      <h3 className="text-2xl text-white font-bold my-4">
+        {category.charAt(0).toUpperCase() + category.slice(1)}
+      </h3>
       {prompts.map((prompt, index) => (
         <button
-          className="rounded-3xl  p-2 bg-white border-indigo-600 border-2 text-indigo-600 text-center hover:bg-indigo-300 hover:text-white"
+          className="rounded-lg p-2 m-2 bg-indigo-500 border-indigo-500 border-2 font-bold text-white text-center hover:bg-indigo-300 hover:text-white"
           key={index}
           onClick={() => onButtonClick(prompt)}
         >
-          {prompt}
+          {prompt.charAt(0).toUpperCase() + prompt.slice(1)}
         </button>
       ))}
     </div>
@@ -60,7 +61,7 @@ const SuggestPrompts = () => {
   const handleButtonClick = (prompt) => {
     console.log(`Button clicked: ${prompt}`);
     //check the last character of a string to see if it is a comma (,)
-    if (message.charAt(message.length - 1) === ",") {
+    if (message.charAt(message.length - 1) === "," || message === "") {
       setMessage(message + prompt + ",");
     } else {
       setMessage(message + "," + prompt + ",");

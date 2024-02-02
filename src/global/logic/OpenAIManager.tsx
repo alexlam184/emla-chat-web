@@ -82,11 +82,12 @@ const getOutput = async (
 };
 
 export const useOpenAI = () => {
-  const {  i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const openAICalling = async (prompts: Array<promptProps>) => {
-
-    const targetUserPrefix = i18n.resolvedLanguage === "en" ? messageSettings.userPrefix_eng :messageSettings.userPrefix
-
+    const targetUserPrefix =
+      i18n.resolvedLanguage === "en"
+        ? messageSettings.userPrefix_eng
+        : messageSettings.userPrefix;
 
     console.log("openAI CALLING...");
     const prompts_api: Array<promptProps> = prompts.map(
@@ -95,9 +96,7 @@ export const useOpenAI = () => {
           role: prompt.role,
           content:
             prompt.role === Role.User
-              ? targetUserPrefix +
-                prompt.content +
-                messageSettings.userProfix
+              ? targetUserPrefix + prompt.content + messageSettings.userProfix
               : messageSettings.assistantPrefix +
                 prompt.content +
                 messageSettings.assistantProfix,

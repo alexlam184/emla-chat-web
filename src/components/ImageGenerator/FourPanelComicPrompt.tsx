@@ -51,7 +51,7 @@ export default function FourPanelComicPrompt() {
         <button
           type="button"
           onClick={openModel}
-          className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+          className="rounded-md bg-lime-500 px-4 py-2 text-sm font-medium text-white hover:bg-white hover:text-lime-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           Four panel comic
         </button>
@@ -90,16 +90,21 @@ export default function FourPanelComicPrompt() {
                     Four Panel Comic
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      four panel comic strip, [1]{" "}
-                      {firstPrompt === "" ? "... " : firstPrompt + " "} [2]{" "}
+                    <p className="text-sm text-gray-500 text-wrap">
+                      Prompts for four panel comic: <br />
+                      Panel 1: {firstPrompt === "" ? "... " : firstPrompt + " "}
+                      <br />
+                      Panel 2:{" "}
                       {secondPrompt === "" ? "... " : secondPrompt + " "}
-                      [3] {thirdPrompt === "" ? "... " : thirdPrompt + " "}
-                      [4] {forthPrompt === "" ? "... " : forthPrompt + " "}
+                      <br />
+                      Panel 3: {thirdPrompt === "" ? "... " : thirdPrompt + " "}
+                      <br />
+                      Panel 4: {forthPrompt === "" ? "... " : forthPrompt + " "}
+                      <br />
                     </p>
                     <ul className="grid grid-cols-2 grid-rows-2">
                       <li>
-                        [1]
+                        [1]{" "}
                         <input
                           className=" border-indigo-600 border-2"
                           type="text"
@@ -110,7 +115,7 @@ export default function FourPanelComicPrompt() {
                         />
                       </li>
                       <li>
-                        [2]
+                        [2]{" "}
                         <input
                           type="text"
                           className=" border-indigo-600 border-2"
@@ -121,7 +126,7 @@ export default function FourPanelComicPrompt() {
                         />
                       </li>
                       <li>
-                        [3]
+                        [3]{" "}
                         <input
                           type="text"
                           className=" border-indigo-600 border-2"
@@ -132,7 +137,7 @@ export default function FourPanelComicPrompt() {
                         />
                       </li>
                       <li>
-                        [4]
+                        [4]{" "}
                         <input
                           type="text"
                           className=" border-indigo-600 border-2"

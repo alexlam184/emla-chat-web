@@ -54,6 +54,7 @@ function App() {
   const { imageMessage, setImageMessage } = useImageOutputMessageStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [targetImagePrompt, setTargetImagePrompt] = useState<string>("");
+  const [currentIndex, setIndex] = useState(prompts.length - 1);
 
   const openai = new OpenAI({
     apiKey: Base64.decode(import.meta.env.VITE_OPENAI_API_KEY),
@@ -78,11 +79,19 @@ function App() {
           model: "dall-e-3",
           prompt: targetPrompt,
           n: 1,
-          size: "1024x1024",
+          size: "1792x1024",
         });
         const image_url = response.data[0].url ?? "no response";
         console.log("alex url=", image_url);
+        const msg: messageProps = {
+          time: Date.now(),
+          role: Role.User,
+          content: image_url,
+          liked: false,
+        };
         setImageMessage(image_url);
+        pushMessage([msg]);
+        pushPrompt([msg]);
       } else {
         console.log("call chatGPT...");
         const input: messageProps = text
@@ -140,6 +149,36 @@ function App() {
   const handleSTTEnd = () => {
     STTEnd();
   };
+
+  const displayPrevImage = () => {
+    let index = currentIndex - 1;
+    console.log(prompts);
+    while (index >= 0) {
+      if (prompts[index].content?.includes("https://oaidalleapiprodscus")) {
+        console.log(prompts[index].content);
+        setImageMessage(prompts[index].content!);
+        setIndex(index);
+        return;
+      }
+      index--;
+    }
+    return;
+  };
+
+  const displayNextImage = () => {
+    let index = currentIndex + 1;
+    while (index < prompts.length) {
+      if (prompts[index].content?.includes("https://oaidalleapiprodscus")) {
+        console.log(prompts[index].content);
+        setImageMessage(prompts[index].content!);
+        setIndex(index);
+        return;
+      }
+      index++;
+    }
+    return;
+  };
+
   return (
     <>
       {/* Background  */}
@@ -175,7 +214,7 @@ function App() {
           <TabsSwitch>
             {/*Chat Box*/}
             <Tab name="chatbot">
-              <div className="w-full h-full grid grid-cols-1  grid-rows-6 gap-4">
+              <div className="w-full h-full grid grid-cols-1 grid-rows-6 gap-4">
                 <Upperfield />
                 <div className="row-span-5">
                   <MessagesArea
@@ -197,9 +236,9 @@ function App() {
             </Tab>
             {/*Image Generate Box*/}
             <Tab name="imageGenerator">
-              <div className="w-full h-full grid grid-cols-1  grid-rows-6 gap-4">
+              <div className="w-full h-full grid grid-cols-1 grid-rows-6 gap-4">
                 <Upperfield />
-                <div className="row-start-2">
+                <div className="-ml-48">
                   <InputField
                     model={Model.dalle_3}
                     handleUserSubmit={handleUserSubmit}
@@ -211,28 +250,54 @@ function App() {
                   />
                 </div>
 
-                <div className="row-span-4 grid grid-cols-2  rounded-lg mx-4 mb-4">
-                  <div className="relative w-full h-full">
-                    {loading && (
-                      <div className="absolute w-full h-full bg-whiteTransparent flex justify-center items-center">
-                        <LoadingMessage loadingMsg="Elma is thinking。。。" />
-                      </div>
-                    )}
-                    <div className="text-white">
-                      <div>
+                <div className="row-span-4 grid grid-cols-2 rounded-lg mx-4 mb-4 gap-2">
+                  {/* Area for displaying generated images */}
+                  <div className="relative w-full h-full -top-10">
+                    <div className="text-white text-2xl font-bold -ml-[180px] mr-4">
+                      <div className="mb-2">
                         <span>Prompt:</span>
                       </div>
                       <textarea
-                        className="text-black w-full"
+                        className="text-black w-full rounded-xl resize-none"
                         value={targetImagePrompt}
                       ></textarea>
                     </div>
-                    <img
-                      className="aspect-square bg-gray-700"
-                      src={imageMessage}
-                    ></img>
+
+                    <div className="absolute right-6 w-[600px] flex justify-center">
+                      <img
+                        src="monitor.png"
+                        alt="Monitor"
+                        className="absolute z-0 w-full h-[635px] -top-20 left-7"
+                      />
+                      {loading ? (
+                        <div className="bg-whiteTransparent w-[525px] h-[300px] absolute top-[45px] left-[65px] rounded-xl z-99 flex justify-center items-center">
+                          <LoadingMessage loadingMsg="Elma is thinking。。。" />
+                        </div>
+                      ) : (
+                        <img
+                          className="bg-gray-700 w-[525px] h-[300px] absolute top-[45px] left-[65px] rounded-xl z-1"
+                          src={imageMessage}
+                          alt="No images generated"
+                        />
+                      )}
+                    </div>
+                    <div className="relative -left-14">
+                      <button
+                        className="text-white rounded-xl bg-indigo-400 w-32 mr-4"
+                        onClick={displayPrevImage}
+                      >
+                        Previous Image
+                      </button>
+                      <button
+                        className="text-white rounded-xl bg-indigo-400 w-32"
+                        onClick={displayNextImage}
+                      >
+                        Next Image
+                      </button>
+                    </div>
                   </div>
-                  <div className="border-indigo-600 border-4 overflow-y-auto">
+
+                  <div className="border-indigo-600 border-4 overflow-y-auto px-2">
                     <SpecialPrompts />
                     <SuggestPrompts />
                   </div>
