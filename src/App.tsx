@@ -275,7 +275,7 @@ function App() {
                         </div>
                       ) : (
                         <img
-                          className="bg-gray-700 w-[525px] h-[300px] absolute top-[45px] left-[65px] rounded-xl z-1"
+                          className="bg-gray-700 w-[525px] h-[300px] absolute top-[45px] left-[65px] rounded-xl z-10"
                           src={imageMessage}
                           alt="No images generated"
                         />
