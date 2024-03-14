@@ -281,7 +281,7 @@ function App() {
                         />
                       )}
                     </div>
-                    <div className="relative -left-14">
+                    {/* <div className="relative -left-14">
                       <button
                         className="text-white rounded-xl bg-indigo-400 w-32 mr-4"
                         onClick={displayPrevImage}
@@ -294,7 +294,7 @@ function App() {
                       >
                         Next Image
                       </button>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="border-indigo-600 border-4 overflow-y-auto px-2">
