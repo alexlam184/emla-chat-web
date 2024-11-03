@@ -123,10 +123,8 @@ function App() {
         let image_url = "no response";
         const openaiApi = axios.create({});
 
-        const ELMAGPT_SERVER_API_URL = "https://elmagpt-server.vercel.app";
         await openaiApi
-          // .post(import.meta.env.VITE_OPENAI_API_URL, params)
-          .post(ELMAGPT_SERVER_API_URL + "/api/image", {
+          .post(import.meta.env.VITE_ELMAGPT_SERVER_API_IMAGE_GEN_URL, {
             model: "dall-e-3",
             prompt: targetPrompt,
             n: 1,

@@ -66,10 +66,9 @@ const getOutput = async (
     };
     let output = "回應出錯";
 
-    const ELMAGPT_SERVER_API_URL = "https://elmagpt-server.vercel.app";
     await openaiApi
       // .post(import.meta.env.VITE_OPENAI_API_URL, params)
-      .post(ELMAGPT_SERVER_API_URL + "/api/text", params)
+      .post(import.meta.env.VITE_ELMAGPT_SERVER_API_CHATBOT_URL, params)
       .then((response) => {
         output = response.data.choices[0].message?.content;
       })
