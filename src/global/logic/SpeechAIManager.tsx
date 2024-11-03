@@ -103,10 +103,10 @@ export const useSpeechAI = (handleSTTEnd: () => void) => {
         ssml,
         (result) => {
           if (result.errorDetails) {
-            console.error(result.errorDetails);
+            console.error("Error:", result.errorDetails);
             reject(result.errorDetails);
           } else {
-            console.log(JSON.stringify(result));
+            console.log("Success:", JSON.stringify(result));
             audioData = result.audioData;
             resolve(audioData);
           }

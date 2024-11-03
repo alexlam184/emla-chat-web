@@ -23,13 +23,13 @@ function MessagesArea(props: MessagesAreaProps) {
   return (
     <div
       ref={messagesEndRef}
-      className="w-full h-full px-3 py-5 overflow-x-hidden overflow-y-auto scroll-smooth scrollbar-hide border-4 rounded-md border-indigo-500"
+      className="w-full h-full px-3 py-5 overflow-x-hidden overflow-y-auto scroll-smooth scrollbar-hide bg-neutral-800"
     >
       {messages.map((msg) => (
         <Message key={msg.time} {...msg} />
       ))}
       {props.loading ? (
-        <LoadingMessage loadingMsg="Elma is thinking。。。" />
+        <LoadingMessage loadingMsg="Elma are thinking。。。" />
       ) : (
         ""
       )}

@@ -21,9 +21,9 @@ const TabsSwitch = ({ children }) => {
 
   return (
     <div className="flex flex-row w-full h-full">
-      <ul aria-label="Tab switch" className="">
+      <ul aria-label="Tab switch" className="absolute">
         {Children.map(children, (child, index) => (
-          <li className="-ml-10">
+          <li>
             <RadioButton
               type="radio"
               key={index}

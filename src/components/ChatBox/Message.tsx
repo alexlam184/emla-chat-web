@@ -38,10 +38,10 @@ function Message(msg: messageProps) {
       >
         {/* Message bubble */}
         <div
-          className={`h-auto inline-block rounded-lg py-2 px-3 my-2 border ${
+          className={`h-auto inline-block rounded-lg py-2 px-3 ${
             msg.role === Role.User
-              ? "bg-gradient-to-bl from-cyan-600 to-cyan-500 text-white border-cyan-400"
-              : "bg-gradient-to-br from-purple-600 to-purple-500 text-black border-purple-300"
+              ? "bg-gradient-to-bl from-cyan-500 to-cyan-400 text-black "
+              : "bg-gradient-to-br from-purple-500 to-purple-400 text-black "
           }`}
           style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
         >

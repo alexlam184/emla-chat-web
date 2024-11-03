@@ -6,7 +6,7 @@ export const RadioButton = ({ type, id, name, label, checked, onChange }) => {
   return (
     <label
       htmlFor={id}
-      className={`flex justify-center items-center bg-gray-100 text-gray-700 rounded-md p-4 m-3  hover:bg-indigo-300 cursor-pointer  ${
+      className={`flex justify-center items-center bg-gray-100 text-gray-700 rounded-md p-1 md:p-2 lg:px-3 lg:my-2  hover:bg-indigo-300 cursor-pointer  ${
         checked ? "bg-indigo-600" : "bg-white"
       }`}
     >

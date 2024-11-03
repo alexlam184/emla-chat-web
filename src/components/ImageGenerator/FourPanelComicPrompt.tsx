@@ -33,7 +33,11 @@ export default function FourPanelComicPrompt() {
 
   function handleSubmit() {
     setMessage(
-      `four panel comic strip, [1]${firstPrompt} [2]${secondPrompt} [3]${thirdPrompt} [4] ${forthPrompt}`
+      `four panel comic strip with each panel as a separate image. No comment balloon in the image. all in the same colorful, Japanese cute , cartoon style .Do not use different art style. Each image depicts a sequential part of the story 
+      1. ${firstPrompt}
+      2. ${secondPrompt}
+      3. ${thirdPrompt} 
+      4. ${forthPrompt}`
     );
     closeModel();
   }
@@ -82,16 +86,16 @@ export default function FourPanelComicPrompt() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="min-h-[500px] min-w-[900px] w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-2xl font-medium leading-6 text-gray-900"
                   >
                     Four Panel Comic
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500 text-wrap">
-                      Prompts for four panel comic: <br />
+                    <p className="text-lg text-gray-500 text-wrap">
+                      Prompts for four panel japanese cute comic: <br />
                       Panel 1: {firstPrompt === "" ? "... " : firstPrompt + " "}
                       <br />
                       Panel 2:{" "}
@@ -103,44 +107,40 @@ export default function FourPanelComicPrompt() {
                       <br />
                     </p>
                     <ul className="grid grid-cols-2 grid-rows-2">
-                      <li>
-                        [1]{" "}
-                        <input
-                          className=" border-indigo-600 border-2"
-                          type="text"
+                      <li className="flex flex-col p-2">
+                        <span>[1] </span>
+                        <textarea
+                          className=" border-indigo-600 border-2 min-w-[300px] min-h-[150px] rounded-md"
                           value={firstPrompt}
                           onChange={(event) =>
                             handleInputChange(1, event.target.value)
                           }
                         />
                       </li>
-                      <li>
-                        [2]{" "}
-                        <input
-                          type="text"
-                          className=" border-indigo-600 border-2"
+                      <li className="flex flex-col p-2">
+                        <span>[2] </span>
+                        <textarea
+                          className=" border-indigo-600 border-2 min-w-[300px] min-h-[150px] rounded-md"
                           value={secondPrompt}
                           onChange={(event) =>
                             handleInputChange(2, event.target.value)
                           }
                         />
                       </li>
-                      <li>
-                        [3]{" "}
-                        <input
-                          type="text"
-                          className=" border-indigo-600 border-2"
+                      <li className="flex flex-col p-2">
+                        <span>[3]</span>
+                        <textarea
+                          className=" border-indigo-600 border-2 min-w-[300px] min-h-[150px] rounded-md"
                           value={thirdPrompt}
                           onChange={(event) =>
                             handleInputChange(3, event.target.value)
                           }
                         />
                       </li>
-                      <li>
-                        [4]{" "}
-                        <input
-                          type="text"
-                          className=" border-indigo-600 border-2"
+                      <li className="flex flex-col p-2">
+                        <span>[4]</span>
+                        <textarea
+                          className=" border-indigo-600 border-2 min-w-[300px] min-h-[150px] rounded-md"
                           value={forthPrompt}
                           onChange={(event) =>
                             handleInputChange(4, event.target.value)
@@ -153,17 +153,24 @@ export default function FourPanelComicPrompt() {
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={handleSubmit}
                     >
                       Submit
                     </button>
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="mx-2 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={handleClear}
                     >
                       Clear
+                    </button>
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={closeModel}
+                    >
+                      Close
                     </button>
                   </div>
                 </Dialog.Panel>

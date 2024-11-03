@@ -1,5 +1,5 @@
 //#region Dependency
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Model, Role } from "../../global/data/Enum";
 import icon_mute from "../../assets/images/icon_mute.png";
 import icon_unmute from "../../assets/images/icon_unmute.png";
@@ -7,6 +7,7 @@ import icon_clean from "../../assets/images/icon_clean.png";
 import icon_send from "../../assets/images/icon_send.png";
 import {
   useInputMessageStore,
+  useGeneralInfoModalStore,
   useMessagesStore,
   usePromptsStore,
 } from "../../store/store";
@@ -21,7 +22,7 @@ interface InputFieldProps {
   handleSTTStart: () => void;
   handleSTTEnd: () => void;
   speaking: boolean;
-  recognizedSpeech: string;
+  recognizedSpeech?: string;
 }
 
 interface IconButtonProps {
@@ -60,16 +61,30 @@ function InputField(props: InputFieldProps) {
     setMessage("");
   };
 
+  const { setGeneralInfoModal } = useGeneralInfoModalStore();
   const { setMessages } = useMessagesStore();
   const { setPrompts } = usePromptsStore();
   const handleClear = () => {
-    console.log("alex locale=", i18n.resolvedLanguage);
+    console.log("Locale=", i18n.resolvedLanguage);
 
     setMessages([]);
+
+    let system_Content = "No system content";
+    if (import.meta.env.VITE_SYSTEM_CONTENT) {
+      system_Content = import.meta.env.VITE_SYSTEM_CONTENT;
+    } else {
+      setGeneralInfoModal({
+        isModalOpen: true,
+        type: "ERROR",
+        title: "import env variable fail",
+        content: "SYSTEM_CONTENT not found.Please info admin",
+      });
+    }
+
     setPrompts([
       {
         role: Role.System,
-        content: import.meta.env.VITE_SYSTEM_CONTENT,
+        content: system_Content,
         // content: i18n.resolvedLanguage === "en" ? import.meta.env.VITE_SYSTEM_CONTENT_ENG :import.meta.env.VITE_SYSTEM_CONTENT,
       },
       ...few_shot_prompts,
@@ -97,15 +112,15 @@ function InputField(props: InputFieldProps) {
       >
         <input
           type="text"
-          placeholder={t("Message Elma")}
-          className="w-full p-2 rounded-3xl"
+          placeholder={t("Message elma")}
+          className="w-full p-3 rounded-3xl"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           disabled={props.speaking}
         />
       </form>
       {/* STTButton */}
-      {props.speaking ? (
+      {/* {props.speaking ? (
         <IconButton
           onClick={props.handleSTTEnd}
           disabled={props.stopInput}
@@ -119,7 +134,7 @@ function InputField(props: InputFieldProps) {
           src={icon_mute}
           alt="icon_mute"
         />
-      )}
+      )} */}
       {/* SendButton */}
       <IconButton
         onClick={handleSend}
