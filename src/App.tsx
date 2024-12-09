@@ -258,15 +258,15 @@ function App() {
         />
       </div>
       {/* Content*/}
-      <div className="absolute flex h-full w-full overflow-hidden">
+      <div className="absolute flex flex-col md:flex-row  h-full w-full overflow-hidden ">
         {/*Live2D Model Container*/}
         <div
           id="elmaContainer"
-          className="flex flex-col w-[30%] 2xl:w-[40%] sm:visible invisible items-start"
+          className="flex lg:flex-col 2xl:w-[40%] items-start lg:w-[55%] h-vh] sm:h-full"
         >
-          <div className="h-1/3 w-full flex items-center justify-end p-5 2xl:p-20 z-50">
-            <div className="w-[600px]">
-              <img src={title} alt="title" className="scale-75 -z-30"></img>
+          <div className="lg:h-1/3 w-auto lg:w-full flex items-center justify-end lg:p-5 2xl:p-20 z-50">
+            <div className="w-[100px] lg:w-[600px]">
+              <img src={title} alt="title" className="lg:scale-75 m-5"></img>
               <div className="flex flex-row mt-5">
                 <div className="flex flex-col w-full ">
                   <MuteSwitch />
@@ -275,18 +275,18 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="flex flex-row w-full h-2/3 items-center justify-end z-40">
+          <div className="md:flex md:flex-row w-full lg:h-2/3 items-center justify-end z-40 lg:justify-center absolute sm:relative">
             <Live2DField emotion={emotion} audioData={audioData} />
           </div>
         </div>
 
-        <div className="flex flex-col w-[70%] 2x:w-[60%] p-1 items-center justify-center z-10">
+        <div className="flex flex-col md:w-[70%] 2x:w-[60%] p-1 items-center justify-center z-10 lg:w-[45%] w-full h-[60vh] sm:h-full">
           <TabsSwitch>
             {/*Chat Box*/}
             <Tab name="chatbot">
-              <div className="w-full h-full grid grid-cols-1 grid-rows-6 gap-4">
+              <div className="w-full h-full grid grid-cols-1 grid-rows-6 lg:gap-4">
                 <Upperfield />
-                <div className="row-span-5 bg-neutral-600 rounded-lg p-4">
+                <div className="row-span-5 bg-neutral-600 rounded-lg p-4 h-full">
                   <MessagesArea
                     loading={stopInput.current}
                     speaking={speaking}
@@ -330,7 +330,6 @@ function App() {
                     recognizedSpeech={recognizedSpeech} //TODO: disable speech
                   />
                 </div>
-
                 <div className="row-span-4 grid grid-cols-2 rounded-lg mx-4 mb-4 gap-2 ">
                   {/* Area for displaying generated images */}
                   <div className="relative w-full h-full">
@@ -344,7 +343,6 @@ function App() {
                         readOnly
                       ></textarea>
                     </div>
-
                     <div className=" relative w-full  min-h-[250px] 2xl:min-h-[300px]  overflow-y-auto px-2">
                       <div
                         className="absolute w-full h-full left-0 right-0 ml-auto mr-auto flex justify-center"
@@ -369,7 +367,6 @@ function App() {
                                   }}
                                 />
                               )}
-
                               <div className="absolute bg-whiteTransparent w-full h-full z-20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-2xl">
                                 <span>{t("openImage")}</span>
                               </div>
@@ -407,7 +404,6 @@ function App() {
                       </button>
                     </div> */}
                   </div>
-
                   <div className="border-indigo-600 border-4 overflow-y-auto px-2">
                     <SpecialPrompts />
                     <SuggestPrompts />

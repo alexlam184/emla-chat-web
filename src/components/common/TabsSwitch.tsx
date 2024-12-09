@@ -20,8 +20,8 @@ const TabsSwitch = ({ children }) => {
   };
 
   return (
-    <div className="flex flex-row w-full h-full">
-      <ul aria-label="Tab switch" className="absolute">
+    <div className="flex flex-col sm:flex-row  w-full h-full ">
+      <ul aria-label="Tab switch" className="flex flex-row sm:flex-col">
         {Children.map(children, (child, index) => (
           <li>
             <RadioButton
